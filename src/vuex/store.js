@@ -24,10 +24,6 @@ const mutations = {
 		//设置key值
 		state.key = obj.key;
 	},
-	SET_LOCAL (state,obj) {
-		//设置内外网
-		state.local = obj.local;
-	},
 	UPDATE_PHOTOOBJ (state,obj) {
 		//更新cordova拍照/相册返回图片对象
 		state.photoObj = obj;
