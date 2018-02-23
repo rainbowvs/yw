@@ -1,0 +1,108 @@
+<template>
+	<div class="header">
+		<div class="container">
+			<div class="left">
+				<slot name="left"></slot>
+			</div>
+			<div class="mid">
+				<slot name="mid"></slot>
+			</div>
+			<div class="right">
+				<slot name="right"></slot>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+	export default{
+		data () {
+			return {
+				
+			}
+		},
+	}
+</script>
+
+<style lang="scss" scoped>
+	@import '../../../static/scss/public.scss';
+	.header{
+		width: 100%;
+		height: 50px;
+	    border-bottom: 1px solid #D3D3D3;
+		&>.container{
+			width: 100%;
+			height: 100%;
+			@include flex(row,space-between);
+			&>.left{
+				height: inherit;
+				@include flex(row,flex-start);
+				&>h1{
+					width: 50px;
+					line-height: 1;
+					@include flex(row);
+					font-size: 16px;
+					@include space(2px);
+				}
+				&>i{
+					width: 50px;
+					@include flex(row);
+					height: inherit;
+					font-size: 28px;
+				}
+			}
+			&>.mid{
+				flex: 1;
+				height: inherit;
+				@include flex(row);
+				&>h1{
+					line-height: 1;
+					font-size: 20px;
+					@include space(5px);
+				}
+				&>form{
+					position: relative;
+					width: 100%;
+					&>input{
+						line-height: 1;
+						font-size: 14px;
+						padding: 12px 12px 12px 45px;
+						width: 100%;
+						height: 28px;
+						box-sizing: border-box;
+						border: 1px solid #e60012;
+						border-radius: 5px;
+						&::-webkit-input-placeholder{
+							font-size: 14px;
+							line-height: 1;
+						}
+					}
+					&>i{
+						font-size: 24px;
+						left: 10px;
+						top: 50%;
+						transform: translate(0,-50%);
+						position: absolute;
+					}
+				}
+			}
+			&>.right{
+				width: 50px;
+				height: inherit;
+				@include flex(row,flex-end);
+				&>i{
+					width: 100%;
+					line-height: 1;
+					@include flex(row);
+					font-size: 30px;
+				}
+				&>span{
+					width: 100%;
+					line-height: 1;
+					height: inherit;
+					@include flex(row);
+				}
+			}
+		}
+	}
+</style>

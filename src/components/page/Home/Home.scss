@@ -1,0 +1,96 @@
+@import '../../../../static/scss/public.scss';
+
+.home{
+    width: 100%;
+    height: 100%;
+    @include flex(column,space-between);
+    &>.container{
+        flex: 1;
+        width: 100%;
+        overflow-y: auto;
+        .swiper-slide{
+            &>img{
+                width: 100%;
+                vertical-align: middle;
+            }
+        }
+        .swiper-pagination{
+            &>.swiper-pagination-bullet{
+                background-color: transparent;
+                border: 1px solid #fff;
+                opacity: 1;
+                &.swiper-pagination-bullet-active{
+                    background-color: #fff;
+                }
+            }
+        }
+        &>.nav{
+            &>ul{
+                margin: 10px 0;
+                width: 100%;
+                @include flex(row);
+                &>li{
+                    width: 25%;
+                    &>a{
+                        @include flex(column);
+                        width: 100%;
+                        &>img{
+                            width: 60%;
+                        }
+                        &>span{
+                            margin-top: 4px;
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
+        }
+        &>img{
+            width: 100%;
+            vertical-align: middle;
+        }
+        &>.kind{
+            padding: 0 10px;
+            &>ul{
+                overflow: hidden;
+                width: 100%;
+                &>li{
+                    box-sizing: border-box;
+                    padding: 7px;
+                    float: left;
+                    width: 50%;
+                    position: relative;
+                    &:nth-child(1){
+                        &>h6{
+                            right: auto;
+                            left: 5px;
+                        }
+                    }
+                    &:nth-child(4){
+                        float: right;
+                        &>h6{
+                            right: auto;
+                            left: 5px;
+                        }
+                    }
+                    &>a{
+                        @include flex(row);
+                        width: 100%;
+                        &>img{
+                            width: 100%;
+                        }
+                        &>span{
+                            margin-top: 4px;
+                            font-size: 14px;
+                        }
+                    }
+                    &>h6{
+                        top: 3px;
+                        right: 5px;
+                        position: absolute;
+                    }
+                }
+            }
+        }
+    }
+}

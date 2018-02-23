@@ -1,0 +1,107 @@
+@import '../../../../static/scss/public.scss';
+
+.categories{
+    width: 100%;
+    height: 100%;
+    @include flex(column,space-between);
+    &>.container{
+        flex: 1;
+        width: 100%;
+        overflow-y: auto;
+        background-color: #F2F2F2;
+        &>.sidebar{
+            &>.mask{
+                visibility: hidden;
+                position: fixed;
+                z-index: 100;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                transition: all .4s;
+                background-color: rgba(0,0,0,.502);
+                opacity: 0;
+                &.active{
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+            &>.container{
+                visibility: hidden;
+                position: fixed;
+                z-index: 1000;
+                top: 0;
+                bottom: 0;
+                right: 30%;
+                left: 0;
+                background-color: #fff;
+                transform: translate3d(-100%,0,0);
+                transition: all .4s;
+                box-sizing: border-box;
+                border-right: 1px solid #ddd;
+                &.active{
+                    visibility: visible;
+                    transform: translate3d(0,0,0);
+                }
+                &>h2{
+                    @include space(5px);
+                    font-size: 18px;
+                    padding: 15px 0 10px 15px;
+                    border-bottom: 1px solid #ddd;
+                }
+                &>ul{
+                    width: 100%;
+                    @include flex(column);
+                    &>li{
+                        text-align: center;
+                        width: 100%;
+                        padding: 10px 0;
+                        @include space(10px);
+                        &.active{
+                            color: #E60012;
+                        }
+                    }
+                }
+            }
+        }
+        &>.list{
+            &>ul{
+                padding: 0 5px;
+                box-sizing: border-box;
+                @include flex(row,flex-start);
+                flex-wrap: wrap;
+                &>li{
+                    width: 50%;
+                    @include flex(row);
+                    padding: 5px;
+                    box-sizing: border-box;
+                    &>a{
+                        width: 100%;
+                        @include flex(column,flex-start);
+                        background-color: #fff;
+                        &>img{
+                            width: 100%;
+                            vertical-align: middle;
+                            background: url('../../../../static/img/imgLoading.png') no-repeat center center;
+                            background-size: 40%;
+                        }
+                        &>h6{
+                            padding: 0 3px;
+                            box-sizing: border-box;
+                            text-align: center;
+                            width: 100%;
+                            font-size: 14px;
+                            color: #333;
+                            @include ellipsis();
+                        }
+                        &>span{
+                            margin: 5px;
+                            font-size: 14px;
+                            color: #E60012;  
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

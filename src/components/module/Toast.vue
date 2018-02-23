@@ -1,0 +1,72 @@
+<template>
+	<div class="toast">
+		<div class="mask" :class="{'active': toasting}"></div>
+		<div class="container">
+			<span v-text="text" :class="{'active': toasting}"></span>
+		</div>
+	</div>
+</template>
+
+<script>
+	export default{
+		data () {
+			return {
+				
+			}
+		},
+		computed: {
+			toasting () {
+				return this.$store.state.toastObj['show'];
+			},
+			text () {
+				return this.$store.state.toastObj['text'];
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	@import '../../../static/scss/public.scss';
+	.toast{
+		pointer-events: none;
+		&>.mask{
+			visibility: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            &.active{
+                visibility: visible;
+            }
+		}
+		&>.container{
+			position: fixed;
+		    left: 0;
+		    right: 0;
+		    top: 0;
+		    bottom: 0;
+		    @include flex(column,flex-end);
+			&>span{
+				max-width: 70%;
+				opacity: 0;
+				padding: 10px 10px;
+				background: rgba(0,0,0,.7);
+				border-radius: 5px;
+				transition: .5s;
+				visibility: hidden;
+				font-size: 14px;
+				line-height: 1.3;
+				color: #fff;
+				&.active{
+					transform: translate3d(0,-80px,0);
+				    visibility: visible;
+				    opacity: 1;
+				}
+			}
+		}
+	}
+</style>
