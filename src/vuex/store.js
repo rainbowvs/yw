@@ -24,10 +24,6 @@ const mutations = {
 		//设置key值
 		state.key = obj.key;
 	},
-	UPDATE_PHOTOOBJ (state,obj) {
-		//更新cordova拍照/相册返回图片对象
-		state.photoObj = obj;
-	},
 	SHOW_LOADING (state) {
 		//显示loading组件
 		state.loadingObj['count']++;
