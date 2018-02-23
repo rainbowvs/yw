@@ -17,21 +17,6 @@ const state = {
 		text: '',
 	},
 	timer: null,//计时器
-	gradeList: [
-		//年级转换数组
-		{grade: 1, volume:1, cvolume: 1, cgrade: '一年级上册'},
-		{grade: 1, volume:2, cvolume: 2, cgrade: '一年级下册'},
-		{grade: 2, volume:1, cvolume: 3,  cgrade: '二年级上册'},
-		{grade: 2, volume:2, cvolume: 4,  cgrade: '二年级下册'},
-		{grade: 3, volume:1, cvolume: 5,  cgrade: '三年级上册'},
-		{grade: 3, volume:2, cvolume: 6,  cgrade: '三年级下册'},
-		{grade: 4, volume:1, cvolume: 7,  cgrade: '四年级上册'},
-		{grade: 4, volume:2, cvolume: 8,  cgrade: '四年级下册'},
-		{grade: 5, volume:1, cvolume: 9,  cgrade: '五年级上册'},
-		{grade: 5, volume:2, cvolume: 10,  cgrade: '五年级下册'},
-		{grade: 6, volume:1, cvolume: 11,  cgrade: '六年级上册'},
-		{grade: 6, volume:2, cvolume: 12,  cgrade: '六年级下册'},
-	],
 };
 
 const mutations = {
