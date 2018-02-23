@@ -9,6 +9,7 @@ import Loading from '@/components/module/Loading'
 import Toast from '@/components/module/Toast'
 import Dialog from '@/components/module/Dialog'
 
+//全局赋值ajax
 Vue.prototype.$ajax = ajax;
 
 Vue.component('my-loading',Loading);
