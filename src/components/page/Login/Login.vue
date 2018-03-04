@@ -29,7 +29,7 @@
 </style>
 
 <script>
-	import Header from '@/components/module/Header';
+	import Header from '@/components/module/Header/Header';
 	export default {
 		data () {
 			return {

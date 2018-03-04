@@ -27,10 +27,11 @@
                 width: 100%;
                 &>i{
                     color: #666;
-                    font-size: 26px;
+                    font-size: 24px;
                     margin-left: 10px;
                 }
                 &>span{
+                    line-height: 1;
                     @include space(2px);
                     margin-left: 10px;
                     font-size: 16px;
@@ -43,7 +44,7 @@
                     @include flex(row,flex-start);
                     &>.checkbox{
                         color: #666;
-                        font-size: 26px;
+                        font-size: 24px;
                         margin-left: 10px;
                     }
                     &>.info{

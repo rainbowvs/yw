@@ -8,32 +8,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'app',
-  mounted () {
-  	//隐藏初始化加载动画
-		let initLoading = document.getElementsByClassName('initLoading')[0];
-		document.body.removeChild(initLoading);
-  },
-  data () {
-    return {
-    	transitionName: 'current', //绑定在组件上面的动效class
-    }
-	},
-	watch: {
-    '$route' (to, from){
-	    const toDepth = to.path.split('/').length;
-	    const fromDepth = from.path.split('/').length;
-    	if(from.name == null)
-    		this.transitionName = 'current';
-    	else
-    		this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
-    }
-	}
-}
-</script>
-
 <style lang="scss" scoped>
 	#app{
 	  width: 100%;
@@ -98,3 +72,31 @@ export default {
 	}
 
 </style>
+
+<script>
+export default {
+  name: 'app',
+  mounted () {
+  	//隐藏初始化加载动画
+  	this.$nextTick(() => {
+			let initLoading = document.getElementsByClassName('initLoading')[0];
+			document.body.removeChild(initLoading);
+		});
+  },
+  data () {
+    return {
+    	transitionName: 'current', //绑定在组件上面的动效class
+    }
+	},
+	watch: {
+    '$route' (to, from){
+	    const toDepth = to.path.split('/').length;
+	    const fromDepth = from.path.split('/').length;
+    	if(from.name == null)
+    		this.transitionName = 'current';
+    	else
+    		this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+    }
+	}
+}
+</script>

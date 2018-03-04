@@ -5,9 +5,9 @@ import App from './App'
 import router from './router'
 import store from '@/vuex/store'
 import ajax from '../static/js/ajax.js'
-import Loading from '@/components/module/Loading'
-import Toast from '@/components/module/Toast'
-import Dialog from '@/components/module/Dialog'
+import Loading from '@/components/module/Loading/Loading'
+import Toast from '@/components/module/Toast/Toast'
+import Dialog from '@/components/module/Dialog/Dialog'
 
 //全局赋值ajax
 Vue.prototype.$ajax = ajax;

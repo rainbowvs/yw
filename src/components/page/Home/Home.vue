@@ -95,7 +95,7 @@
 </style>
 
 <script>
-	import Header from '@/components/module/Header';
+	import Header from '@/components/module/Header/Header';
 	import Swiper from 'swiper';
 	import 'swiper/dist/css/swiper.min.css';
 	export default {

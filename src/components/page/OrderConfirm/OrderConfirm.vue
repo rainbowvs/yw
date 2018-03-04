@@ -15,7 +15,7 @@
 </style>
 
 <script>
-	import Header from '@/components/module/Header';
+	import Header from '@/components/module/Header/Header';
 	export default {
 		data () {
 			return {
@@ -27,7 +27,7 @@
 		},
 		methods: {
 			goBack () {
-				this.$router.push({name: 'Cart'});
+				this.$router.go(-1);
 			},
 		},
 		components: {
