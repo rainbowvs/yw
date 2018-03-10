@@ -1,3 +1,7 @@
+<style lang="scss" scoped>
+	@import 'Cart.scss';
+</style>
+
 <template>
 	<div class="cart">
 		<my-header>
@@ -8,20 +12,20 @@
 			<div class="list">
 				<h2 @click="checkedAll=!checkedAll">
 					<template v-if="checkedAll">
-						<i class="iconfont icon-checkbox-checked checkbox"></i>
+						<i class="yuewang icon-checkbox-checked checkbox"></i>
 					</template>
 					<template v-else>
-						<i class="iconfont icon-checkbox checkbox"></i>
+						<i class="yuewang icon-checkbox checkbox"></i>
 					</template>
 					<span>全选</span>
 				</h2>
 				<ul>
 					<li v-for="shop,index in shops">
 						<template v-if="shop.isChecked">
-							<i class="iconfont icon-checkbox-checked checkbox" @click="checkedClick(shop)"></i>
+							<i class="yuewang icon-checkbox-checked checkbox" @click="checkedClick(shop)"></i>
 						</template>
 						<template v-else>
-							<i class="iconfont icon-checkbox checkbox" @click="checkedClick(shop)"></i>
+							<i class="yuewang icon-checkbox checkbox" @click="checkedClick(shop)"></i>
 						</template>
 						<div class="info">
 							<img :src="shop.poster" />
@@ -35,22 +39,23 @@
 								</form>
 							</div>
 						</div>
-						<i class="iconfont icon-roundclose delete" @click="deleteClick(index)"></i>
+						<i class="yuewang icon-roundclose delete" @click="deleteClick(index)"></i>
 					</li>
 				</ul>
 			</div>
 		</div>
 		<div class="footer">
-			<span>合计：￥{{0}}元</span>
-			<a href="javascript:;" @click="$router.push({name: 'OrderConfirm'})">结算</a>
+			<div class="left">
+				<span>合计：</span>
+				<em>￥{{0}}</em>
+			</div>
+			<div class="right" @click="balanceClick">
+				<a href="javascript:;">结算</a>
+			</div>
 		</div>
 		<my-dialog ref="dialog" @sure="ok"></my-dialog>
 	</div>
 </template>
-
-<style lang="scss">
-	@import 'Cart.scss';
-</style>
 
 <script>
 	import Header from '@/components/module/Header/Header';
@@ -61,13 +66,23 @@
 					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
 					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
 					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
+					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
+					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
+					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
 				],
 			}
 		},
-		mounted () {
+		created () {
 			
 		},
 		methods: {
+			balanceClick () {
+				let that = this;
+				that.$store.commit('SET_ORDERCONFIRMBACKNAME',{
+					name: 'Cart',
+				});
+				that.$router.push({name: 'OrderConfirm'});
+			},
 			ok (n) {
 				this.shops.splice(n,1);
 				this.$refs.dialog.close();

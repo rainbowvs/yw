@@ -13,7 +13,7 @@
             @include flex(column,flex-start);
             &>div{
                 width: 90%;
-                border-bottom: 1px solid #ddd;
+                border-bottom: 1px solid $borderColor;
                 @include flex(row);
                 margin-bottom: 10%;
                 &>i{
@@ -34,7 +34,8 @@
             &>a{
                 width: 90%;
                 height: 40px;
-                background-color: #ddd;
+                background-color: $themeColor;
+                color: #fff;
                 font-size: 18px;
                 @include flex(row);
                 @include space(5px);
@@ -48,7 +49,7 @@
                 @include flex(row);
                 flex: 1;
                 box-sizing: border-box;
-                border: 1px solid #ddd;
+                border: 1px solid $borderColor;
                 font-size: 14px;
                 height: 40px;
                 &:first-child{

@@ -1,21 +1,25 @@
+<style lang="scss" scoped>
+	@import 'Register.scss';
+</style>
+
 <template>
 	<div class="register">
 		<my-header>
-			<i slot="left" class="iconfont icon-return" @click="goBack"></i>
+			<i slot="left" class="yuewang icon-return" @click="goBack"></i>
 			<h1 slot="mid">注册</h1>
 		</my-header>
 		<div class="container">
 			<form>
 				<div id="user">
-					<i class="iconfont icon-my"></i>
+					<i class="yuewang icon-my"></i>
 					<input type="text" v-model="user" placeholder="请输入账号"/>
 				</div>
 				<div id="pwd">
-					<i class="iconfont icon-lock"></i>
+					<i class="yuewang icon-lock"></i>
 					<input type="password" v-model="pwd" placeholder="请输入密码"/>
 				</div>
 				<div id="email">
-					<i class="iconfont icon-mail"></i>
+					<i class="yuewang icon-mail"></i>
 					<input type="email" v-model="email" placeholder="请输入邮箱"/>
 				</div>
 				<a href="javascript:;">注册</a>
@@ -26,10 +30,6 @@
 		</div>
 	</div>
 </template>
-
-<style lang="scss">
-	@import 'Register.scss';
-</style>
 
 <script>
 	import Header from '@/components/module/Header/Header';

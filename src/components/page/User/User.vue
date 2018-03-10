@@ -3,7 +3,7 @@
 		<div class="header">
 			<img src="http://qzapp.qlogo.cn/qzapp/101303972/CD5220AFA905C8D4BAE834719D3B29F9/100" />
 			<h6>rainbowvs</h6>
-			<i class="iconfont icon-share"></i>
+			<i class="yuewang icon-share"></i>
 		</div>
 		<div class="container">
 			<div class="info">
@@ -50,19 +50,19 @@
 			<div class="func">
 				<ul>
 					<li>
-						<i class="iconfont icon-setup"></i>
+						<i class="yuewang icon-setup"></i>
 						<span>账户设置</span>
 					</li>
 					<li>
-						<i class="iconfont icon-service"></i>
+						<i class="yuewang icon-service"></i>
 						<span>客户服务</span>
 					</li>
 					<li>
-						<i class="iconfont icon-about"></i>
+						<i class="yuewang icon-about"></i>
 						<span>关于我们</span>
 					</li>
 					<li>
-						<i class="iconfont icon-logout"></i>
+						<i class="yuewang icon-logout"></i>
 						<span>退出</span>
 					</li>
 				</ul>
@@ -71,7 +71,7 @@
 	</div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	@import 'User.scss';
 </style>
 

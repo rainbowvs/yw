@@ -1,3 +1,7 @@
+<style lang="scss" scoped>
+	@import 'Index.scss';
+</style>
+
 <template>
 	<div class="index">
 		<router-view />
@@ -5,12 +9,8 @@
 	</div>
 </template>
 
-<style lang="scss">
-	@import 'Index.scss';
-</style>
-
 <script>
-	import Footer from '@/components/module/Footer';
+	import Footer from '@/components/module/Footer/Footer';
 	export default {
 		data () {
 			return {

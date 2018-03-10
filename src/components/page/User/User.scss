@@ -5,12 +5,13 @@
     height: 100%;
     @include flex(column,space-between);
     &>.header{
-        background-color: #aaa;
+        background-color: $themeColor;
         height: 140px;
         width: 100%;
         @include flex(column);
         position: relative;
         &>img{
+            border: 3px solid #fff;
             border-radius: 100%;
             width: 20%;
             max-width: 100px;
@@ -18,7 +19,7 @@
         &>h6{
             color: #fff;
             margin-top: 5px;
-            font-size: 14px;
+            font-size: 16px;
             @include space(3px);
         }
         &>i{
@@ -36,7 +37,7 @@
         flex: 1;
         width: 100%;
         overflow-y: auto;
-        background-color: #f1f1f1;
+        background-color: $bgColor;
         &>.info{
             background-color: #fff;
             &>ul{
@@ -60,7 +61,7 @@
             margin-top: 20px;
             background-color: #fff;
             &>h2{
-                border-bottom: 1px solid #ddd;
+                border-bottom: 1px solid $borderColor;
                 height: 35px;
                 @include flex(row,flex-start);
                 padding-left: 10px;
@@ -90,7 +91,7 @@
                 width: 100%;
                 &>li{
                     box-sizing: border-box;
-                    border-bottom: 1px solid #ddd;
+                    border-bottom: 1px solid $borderColor;
                     @include flex(row,flex-start);
                     height: 45px;
                     &:last-child{

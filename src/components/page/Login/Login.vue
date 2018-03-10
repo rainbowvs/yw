@@ -1,17 +1,21 @@
+<style lang="scss" scoped>
+	@import 'Login.scss';
+</style>
+
 <template>
 	<div class="login">
 		<my-header>
-			<i slot="left" class="iconfont icon-return" @click="goBack"></i>
+			<i slot="left" class="yuewang icon-return" @click="goBack"></i>
 			<h1 slot="mid">登录</h1>
 		</my-header>
 		<div class="container">
 			<form>
 				<div id="user">
-					<i class="iconfont icon-my"></i>
+					<i class="yuewang icon-my"></i>
 					<input type="text" v-model="user" placeholder="请输入账号"/>
 				</div>
 				<div id="pwd">
-					<i class="iconfont icon-lock"></i>
+					<i class="yuewang icon-lock"></i>
 					<input type="password" v-model="pwd" placeholder="请输入密码"/>
 				</div>
 				<a href="javascript:;">登录</a>
@@ -23,10 +27,6 @@
 		</div>
 	</div>
 </template>
-
-<style lang="scss">
-	@import 'Login.scss';
-</style>
 
 <script>
 	import Header from '@/components/module/Header/Header';

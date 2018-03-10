@@ -1,10 +1,14 @@
+<style lang="scss" scoped>
+	@import 'Categories.scss';
+</style>
+
 <template>
 	<div class="categories">
 		<my-header>
-			<i slot="left" class="iconfont icon-sort" @click="sidebar_show=true"></i>
+			<i slot="left" class="yuewang icon-sort" @click="sidebar_show=true"></i>
 			<form slot="mid">
 				<input type="text" placeholder="戒指" v-model="searchContent" autofocus />
-				<i class="iconfont icon-search"></i>
+				<i class="yuewang icon-search"></i>
 			</form>
 			<span slot="right" @click="searchContent=''">清空</span>
 		</my-header>
@@ -12,7 +16,7 @@
 			<div class="sidebar">
 				<div class="mask" :class="{'active': sidebar_show}" @click="sidebar_show=false"></div>
 				<div class="container" :class="{'active': sidebar_show}">
-					<h2>款式</h2>
+					<h2>材质</h2>
 					<ul>
 						<li v-for="type,index in types" v-text="type.name" :class="{'active': type.isChecked}" @click="typeClick(index)"></li>
 					</ul>
@@ -38,10 +42,6 @@
 	</div>
 </template>
 
-<style lang="scss">
-	@import 'Categories.scss';
-</style>
-
 <script>
 	import Header from '@/components/module/Header/Header';
 	export default {
@@ -58,12 +58,13 @@
 					{id: 5,name: '典雅十字银925手链',price: '360.00',poster: 'https://cdn.ctfmall.com/thumb/AB35097.jpg',type: 5,isLoaded: false,},
 				],
 				types: [
-					{name: '戒指', type: 0,isChecked: false,},
-					{name: '项链', type: 1,isChecked: false,},
-					{name: '吊坠', type: 2,isChecked: false,},
-					{name: '耳环', type: 3,isChecked: false,},
-					{name: '手镯', type: 4,isChecked: false,},
-					{name: '手链', type: 5,isChecked: false,},
+					{name: '黄金', type: 0,isChecked: false,},
+					{name: '钻石', type: 1,isChecked: false,},
+					{name: 'K金', type: 2,isChecked: false,},
+					{name: '铂金', type: 3,isChecked: false,},
+					{name: '珍珠', type: 4,isChecked: false,},
+					{name: '银饰', type: 5,isChecked: false,},
+					{name: '玉石', type: 6,isChecked: false,},
 				],
 			}
 		},

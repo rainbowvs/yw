@@ -27,7 +27,7 @@
                     }
                     &>.price{
                         font-size: 14px;
-                        color: #FF0036;
+                        color: $seThemeColor;
                     }
                     &>dl{
                         @include flex(row,flex-start);
@@ -35,11 +35,13 @@
                             box-sizing: border-box;
                             margin: 0 4px;
                             padding: 5px;
-                            border: 1px solid #EFEEEC;
+                            border: 1px solid $borderColor;
+                            border-radius: 5px;
                             line-height: 1;
                             font-size: 14px;
+                            background-color: #fff;
                             &.active{
-                                border-color: #FF0036;
+                                border-color: $seThemeColor;
                             }
                             &:first-of-type{
                                 margin-left: 0;
@@ -166,7 +168,7 @@
         }
     }
     &>.footer{
-        border-top: 1px solid #ddd;
+        border-top: 1px solid $borderColor;
         width: 100%;
         @include flex(row);
         &>.addCart{
@@ -178,8 +180,8 @@
             @include flex(row);
             height: 50px;
             width: 50%;
-            color: #E60012;
-            border-left: 1px solid #ddd;
+            color: $seThemeColor;
+            border-left: 1px solid $borderColor;
         }
     }
 }

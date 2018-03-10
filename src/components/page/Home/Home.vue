@@ -1,12 +1,16 @@
+<style lang="scss">
+	@import 'Home.scss';
+</style>
+
 <template>
 	<div class="home">
 		<my-header>
 			<h1 slot="left">越王</h1>
 			<form slot="mid">
 				<input type="text" placeholder="戒指" readonly @click="$router.push({name: 'Categories'})" />
-				<i class="iconfont icon-search"></i>
+				<i class="yuewang icon-search"></i>
 			</form>
-			<i slot="right" class="iconfont icon-message"></i>
+			<i slot="right" class="yuewang icon-message"></i>
 		</my-header>
 		<div class="container">
 			<div class="swiper-container">
@@ -89,10 +93,6 @@
 		</div>
 	</div>
 </template>
-
-<style lang="scss">
-	@import 'Home.scss';
-</style>
 
 <script>
 	import Header from '@/components/module/Header/Header';

@@ -1,7 +1,11 @@
+<style lang="scss" scoped>
+	@import 'ShopDetail.scss';
+</style>
+
 <template>
 	<div class="shopdetail">
 		<my-header>
-			<i slot="left" class="iconfont icon-return" @click="goBack"></i>
+			<i slot="left" class="yuewang icon-return" @click="goBack"></i>
 			<h1 slot="mid">商品详情</h1>
 		</my-header>
 		<div class="container">
@@ -96,10 +100,6 @@
 		</div>
 	</div>
 </template>
-
-<style lang="scss">
-	@import 'ShopDetail.scss';
-</style>
 
 <script>
 	import Header from '@/components/module/Header/Header';
