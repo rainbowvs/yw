@@ -78,10 +78,8 @@ export default {
   name: 'app',
   mounted () {
   	//隐藏初始化加载动画
-  	this.$nextTick(() => {
-			let initLoading = document.getElementsByClassName('initLoading')[0];
-			document.body.removeChild(initLoading);
-		});
+		let initLoading = document.getElementsByClassName('initLoading')[0];
+		document.body.removeChild(initLoading);
   },
   data () {
     return {
