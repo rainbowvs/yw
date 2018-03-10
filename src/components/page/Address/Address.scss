@@ -1,0 +1,100 @@
+@import '../../../../static/scss/public.scss';
+
+.address{
+    width: 100%;
+    height: 100%;
+    @include flex(column,space-between);
+    &>.container{
+        flex: 1;
+        width: 100%;
+        overflow-y: auto;
+        background-color: $bgColor;
+        &>ul{
+            &>li{
+                margin-top: 15px;
+                background-color: #fff;
+                box-sizing: border-box;
+                &:last-child{
+                    margin-bottom: 10px;
+                }
+                &>.top{
+                    padding: 0 15px;
+                    border-bottom: 1px solid $borderColor;
+                    &>.userInfo{
+                        height: 35px;
+                        @include flex(row,space-between);
+                        &>span{
+                            font-size: 16px;
+                        }
+                        &>em{
+                            font-style: normal;
+                            font-size: 14px;
+                        }
+                    }
+                    &>p{
+                        margin-bottom: 15px;
+                        font-size: 14px;
+                    }
+                }
+                &>.bottom{
+                    height: 35px;
+                    @include flex(row,space-between);
+                    &>.left{
+                        padding: 0 15px;
+                        height: 100%;
+                        @include flex(row);
+                        &>i{
+                            @include flex(row);
+                            height: 100%;
+                            margin-right: 5px;
+                            font-size: 18px;
+                            &.checked{
+                                color: $themeColor;
+                            }
+                        }
+                        &>span{
+                            @include flex(row);
+                            height: 100%;
+                            font-size: 14px;
+                            &.checked{
+                                color: $themeColor;
+                            }
+                        }
+                    }
+                    &>.right{
+                        height: 100%;
+                        @include flex(row,flex-end);
+                        &>span{
+                            @include flex(row);
+                            padding: 0 10px;
+                            height: 100%;
+                            &:first-child{
+                                
+                            }
+                            &>i{
+                                font-size: 18px;
+                                font-style: normal;
+                            }
+                            &>em{
+                                margin-left: 5px;
+                                font-size: 14px;
+                                font-style: normal;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &>.footer{
+        @include flex(row);
+        width: 100%;
+        height: 40px;
+        background-color: $themeColor;
+        &>a{
+            @include space(4px);
+            color: #fff;
+            font-size: 16px;
+        }
+    }
+}
