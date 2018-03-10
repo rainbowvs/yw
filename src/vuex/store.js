@@ -17,6 +17,8 @@ const state = {
 		text: '',
 	},
 	timer: null,//计时器
+	AddressBackName: '',//收货地址管理页面返回页面名字
+	OrderConfirmBackName: '',//订单确认页面返回页面名字
 };
 
 const mutations = {
@@ -48,6 +50,14 @@ const mutations = {
 		//隐藏toast组件
 		clearTimeout(state.timer);
 		state.toastObj['show'] = false;
+	},
+	SET_ADDRESSBACKNAME (state,obj) {
+		//设定收货地址返回
+		state.AddressBackName = obj.name;
+	},
+	SET_ORDERCONFIRMBACKNAME (state,obj) {
+		//设定订单确认返回
+		state.OrderConfirmBackName = obj.name;
 	},
 };
 
