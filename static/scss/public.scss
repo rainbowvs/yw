@@ -1,6 +1,10 @@
 @charset 'utf-8';
 $font: 112.5;
-$themeColor: #3670F0;
+$themeColor: #c19247;
+$seThemeColor: #FF0036;
+$bgColor: #f0f0f0;
+$borderColor: #ddd;
+$maskColor: rgba(0,0,0,.502);
 $img: '../../../../static/img';
 
 //字体适配
@@ -10,7 +14,7 @@ $img: '../../../../static/img';
     font-size: $font/3;
   }
   [data-dpr="2"] &{
-    font-size: $font/1.6;
+    font-size: $font/1.5;
   }
   [data-dpr="3"] &{
     font-size: $font;
