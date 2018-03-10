@@ -43,11 +43,11 @@
                 text-align: center;
                 font-size: 16px;
                 font-weight: 700;
-                color: #555;
+                color: #333;
             }
         }
         &>.content{
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid $borderColor;
             padding: 10px 20px 15px;
             min-height: 36px;
             position: relative;
@@ -65,11 +65,11 @@
                 font-size: 16px;
                 background-color: transparent;
                 &:first-child{
-                    border-right: 1px solid #ddd;
-                    color: #999999;
+                    border-right: 1px solid $borderColor;
+                    color: #555;
                 }
                 &:last-child{
-                    color: #333;
+                    color: $themeColor;
                 }
             }
         }

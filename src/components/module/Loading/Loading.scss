@@ -24,15 +24,15 @@
         @include flex(row);
         transform: translate3d(-50%,-50%,0);
         border-radius: 10px;
-        background: rgba(0,0,0,.502);
+        background: $maskColor;
         box-sizing: border-box;
         width: 100px;
         height: 100px;
         &>span{
-            width: 28%;
-            height: 28%;
+            width: 25%;
+            height: 25%;
             border-radius: 50%;
-            border: .2em solid #fff;
+            border: 2px solid #fff;
             border-left-color: transparent;
             animation: rotate .6s infinite linear;
         }
