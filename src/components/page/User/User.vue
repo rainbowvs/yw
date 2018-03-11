@@ -23,7 +23,7 @@
 				</ul>
 			</div>
 			<div class="order">
-				<h2>我的订单</h2>
+				<h2 @click="$router.push({name: 'Order'})">我的订单</h2>
 				<ul>
 					<li>
 						<img src="../../../../static/img/send.jpg"/>
