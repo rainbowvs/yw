@@ -78,7 +78,7 @@
 				<em>￥20</em>
 			</div>
 			<div class="right">
-				确认订单
+				立即支付
 			</div>
 		</div>
 	</div>
