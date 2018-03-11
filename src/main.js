@@ -18,13 +18,25 @@ Vue.component('my-dialog',Dialog);
 
 Vue.config.productionTip = false
 
+window.reqUrl = 'http://192.168.1.101:8082/interface/';
+
 //[全局]进入前触发,必须设置在实例之前
 router.beforeEach((to, from, next) => {
 	store.commit('SHOW_LOADING');
 	store.commit('HIDE_TOAST');
-	if(to.meta.requireProp && store.state.key==''){
-		store.commit('HIDE_LOADING');//因为这里是中断当前路由跳转[还没触发afterEach钩子],再进行第二次路由跳转,所以要手动触发afterEach钩子
-		next({name: 'Login'});
+	if(to.meta.requireProp){
+		let userInfo = window.localStorage.getItem('userInfo');
+		if(userInfo){
+			if(userInfo['token'] == ''){
+				store.commit('HIDE_LOADING');//因为这里是中断当前路由跳转[还没触发afterEach钩子],再进行第二次路由跳转,所以要手动触发afterEach钩子
+				next({name: 'Login'});
+			}else{
+				next();
+			}
+		}else{
+			store.commit('HIDE_LOADING');
+			next({name: 'Login'});
+		}
 	}else{
 		next(); // 确保一定要调用 next()
 	}
