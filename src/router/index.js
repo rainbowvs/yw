@@ -30,7 +30,7 @@ const router = new Router({
 	    		name: 'User',
 	    		component: () => import('@/components/page/User/User.vue'),
 	    		meta: {
-			    	requireProp: false,//需要对跳转进行验证,详情在main.js
+			    	requireProp: true,//需要对跳转进行验证,详情在main.js
 			    },
 	    	}
 	    ],
@@ -41,9 +41,19 @@ const router = new Router({
 	  	component: () => import('@/components/page/ShopDetail/ShopDetail.vue'),
 	  },
 	  {
+	  	path: '/app/order',
+	  	name: 'Order',
+	  	component: () => import('@/components/page/Order/Order.vue'),
+	  },
+	  {
 	  	path: '/app/orderconfirm',
 	  	name: 'OrderConfirm',
 	  	component: () => import('@/components/page/OrderConfirm/OrderConfirm.vue'),
+	  },
+	  {
+	  	path: '/app/order/orderdetail',
+	  	name: 'OrderDetail',
+	  	component: () => import('@/components/page/OrderDetail/OrderDetail.vue'),
 	  },
 	  {
 	  	path: '/app/orderconfirm/address',
