@@ -1,0 +1,132 @@
+@import '../../../../static/scss/public.scss';
+
+.orderdetail{
+    width: 100%;
+    height: 100%;
+    @include flex(column,space-between);
+    &>.container{
+        flex: 1;
+        width: 100%;
+        overflow-y: auto;
+        background-color: $bgColor;
+        &>.address{
+            margin-top: 15px;
+            background-color: #fff;
+            box-sizing: border-box;
+            padding: 15px;
+            @include flex(row);
+            &>.left{
+                width: 14%;
+                &>i{
+                    font-size: 28px;
+                    color: darkred;
+                }
+            }
+            &>.right{
+                width: 86%;
+                &>p{
+                    font-size: 14px;
+                    &:first-child{
+                        margin-bottom: 5px;
+                        @include flex(row,space-between);
+                        &>span{
+                            font-size: 14px;
+                        }
+                        &>em{
+                            font-size: 14px;
+                            font-style: normal;
+                        }
+                    }
+                }
+            }
+        }
+        &>.shopInfo{
+            background-color: #fff;
+            margin-top: 15px;
+            padding: 0 15px;
+            &>ul{
+                &>li{
+                    border-bottom: 1px solid $borderColor;
+                    box-sizing: border-box;
+                    padding: 0 5px;
+                    height: 40px;
+                    @include flex(row,space-between);
+                    &:last-child{
+                        border: none;
+                    }
+                    &>span{
+                        font-size: 14px;
+                    }
+                    &>em{
+                        font-size: 14px;
+                        font-style: normal;
+                        color: $themeColor;
+                    }
+                }
+            }
+        }
+        &>.otherInfo{
+            background-color: #fff;
+            margin: 15px 0;
+            padding: 0 15px;
+            &>ul{
+                &>li{
+                    border-bottom: 1px solid $borderColor;
+                    box-sizing: border-box;
+                    padding: 0 5px;
+                    height: 40px;
+                    @include flex(row,space-between);
+                    &:last-child{
+                        border: none;
+                    }
+                    &>span{
+                        font-size: 14px;
+                    }
+                    &>em{
+                        font-size: 14px;
+                        font-style: normal;
+                        color: $themeColor;
+                    }
+                    &>input{
+                        box-sizing: border-box;
+                        padding: 0 10px;
+                        flex: 1;
+                        color: $themeColor;
+                        text-align: right;
+                        &::-webkit-input-placeholder{
+                            font-size: 14px;
+                            line-height: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &>.footer{
+        width: 100%;
+        height: 40px;
+        background-color: #fff;
+        @include flex(row);
+        box-sizing: border-box;
+        border-top: 1px solid $borderColor;
+        &>.left{
+            width: 70%;
+            &>span{
+                margin-left: 15px;
+                font-size: 16px;
+            }
+            &>em{
+                font-style: normal;
+                color: $themeColor;
+                font-size: 16px;
+            }
+        }
+        &>.right{
+            width: 30%;
+            @include flex(row);
+            height: inherit;
+            background-color: $themeColor;
+            color: #fff;
+        }
+    }
+}
