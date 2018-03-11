@@ -4,8 +4,6 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 const state = {
-//	key: 'b81add887efb4a838d2e7989ab395e2f',//用户key,开发环境
-	key: '',//生产环境
 	loadingObj: {
 		//loading组件对象
 		show: false,
@@ -22,10 +20,6 @@ const state = {
 };
 
 const mutations = {
-	SET_KEY (state,obj) {
-		//设置key值
-		state.key = obj.key;
-	},
 	SHOW_LOADING (state) {
 		//显示loading组件
 		state.loadingObj['count']++;
