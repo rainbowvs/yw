@@ -15,6 +15,7 @@ const state = {
 		text: '',
 	},
 	timer: null,//计时器
+	userInfo: JSON.parse(window.localStorage.getItem('userInfo')),//用户信息
 	AddressBackName: '',//收货地址管理页面返回页面名字
 	OrderConfirmBackName: '',//订单确认页面返回页面名字
 };
