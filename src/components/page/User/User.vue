@@ -61,7 +61,7 @@
 						<i class="yuewang icon-about"></i>
 						<span>关于我们</span>
 					</li>
-					<li>
+					<li @click="logoutClick">
 						<i class="yuewang icon-logout"></i>
 						<span>退出</span>
 					</li>
@@ -83,7 +83,44 @@
 			}
 		},
 		methods: {
-			
+			logoutClick () {
+				let that = this;
+				let userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+				let [id,phone,token] = [userInfo['id'],userInfo['phone'],userInfo['token']];
+				that.$ajax({
+					name: '退出登录',
+					url: window.reqUrl + 'logout.php',
+					data: {
+						id: id,
+						phone: phone,
+						token: token,
+					},
+					beforeSend () {
+						that.$store.commit('SHOW_LOADING');
+					}
+				}).then(res => {
+					if(res.type == 'success'){
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+						//移除用户信息
+						window.localStorage.removeItem('userInfo');
+						setTimeout(() => {
+							that.$router.push({name: 'Home'});
+						},1000);
+					}else{
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+					}
+					that.$store.commit('HIDE_LOADING');
+				}).catch(status => {
+					that.$store.commit('HIDE_LOADING');
+					that.$store.commit('SHOW_TOAST',{
+						text: status
+					});
+				});
+			},
 		},
 	}
 </script>
