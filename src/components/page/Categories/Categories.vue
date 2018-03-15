@@ -22,22 +22,20 @@
 					</ul>
 				</div>
 			</div>
-			<div class="list">
-				<ul>
-					<li v-for="shop,index in searchShops" @click="shopClick(shop)">
-						<a href="javascript:;">
-							<template v-if="shop.isLoaded">
-								<img :src="shop.poster"/>
-							</template>
-							<template v-else>
-								<img src="../../../../static/img/1.gif"/>
-							</template>
-							<h6 v-text="shop.name"></h6>
-							<span>￥{{shop.price}}</span>
-						</a>
-					</li>
-				</ul>
-			</div>
+			<ul class="list">
+				<li v-for="shop,index in searchShops" @click="shopClick(shop)">
+					<a href="javascript:;">
+						<template v-if="shop.isLoaded">
+							<img :src="shop.poster"/>
+						</template>
+						<template v-else>
+							<img src="../../../../static/img/1.gif"/>
+						</template>
+						<h6 v-text="shop.name"></h6>
+						<span>￥{{shop.price}}</span>
+					</a>
+				</li>
+			</ul>
 		</div>
 	</div>
 </template>
@@ -50,12 +48,12 @@
 				searchContent: '',
 				sidebar_show: false,
 				shops: [
-					{id: 0,name: '车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',type: 0,isLoaded: false,},
-					{id: 1,name: '时尚百搭黄金足金项链',price: '1349.60',poster: 'https://cdn.ctfmall.com/thumb/F159797.jpg',type: 1,isLoaded: false,},
-					{id: 2,name: '生肖鸡吉星高照黄金足金吊坠',price: '688.80',poster: 'https://cdn.ctfmall.com/thumb/F200643.jpg',type: 2,isLoaded: false,},
-					{id: 3,name: '心形车花银925耳环',price: '240.00',poster: 'https://cdn.ctfmall.com/thumb/AB35093.jpg',type: 3,isLoaded: false,},
-					{id: 4,name: '【儿童首饰】吉祥转运珠黄金足金手镯',price: '1852.40',poster: 'https://cdn.ctfmall.com/thumb/F166381.jpg',type: 4,isLoaded: false,},
-					{id: 5,name: '典雅十字银925手链',price: '360.00',poster: 'https://cdn.ctfmall.com/thumb/AB35097.jpg',type: 5,isLoaded: false,},
+//					{id: 0,name: '车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F1284.jpg',type: 0,isLoaded: false,},
+//					{id: 1,name: '时尚百搭黄金足金项链',price: '1349.60',poster: 'https://cdn.ctfmall.com/thumb/F159797.jpg',type: 1,isLoaded: false,},
+//					{id: 2,name: '生肖鸡吉星高照黄金足金吊坠',price: '688.80',poster: 'https://cdn.ctfmall.com/thumb/F200643.jpg',type: 2,isLoaded: false,},
+//					{id: 3,name: '心形车花银925耳环',price: '240.00',poster: 'https://cdn.ctfmall.com/thumb/AB35093.jpg',type: 3,isLoaded: false,},
+//					{id: 4,name: '【儿童首饰】吉祥转运珠黄金足金手镯',price: '1852.40',poster: 'https://cdn.ctfmall.com/thumb/F166381.jpg',type: 4,isLoaded: false,},
+//					{id: 5,name: '典雅十字银925手链',price: '360.00',poster: 'https://cdn.ctfmall.com/thumb/AB35097.jpg',type: 5,isLoaded: false,},
 				],
 				types: [
 					{name: '黄金', type: 0,isChecked: false,},
@@ -64,21 +62,70 @@
 					{name: '铂金', type: 3,isChecked: false,},
 					{name: '珍珠', type: 4,isChecked: false,},
 					{name: '银饰', type: 5,isChecked: false,},
-					{name: '玉石', type: 6,isChecked: false,},
+					{name: '宝石', type: 6,isChecked: false,},
 				],
+				currentPage: 1,
+				totalPage: 2,
 			}
 		},
-		mounted () {
-			this.$nextTick(()=>{
-				this.loadImage();
+		created () {
+			let that = this;
+			
+			that.$ajax({
+				name: '获取商品列表',
+				url: window.reqUrl + 'shop.php',
+				data: {
+					phone: that.$store.state.userInfo['phone'],
+					token: that.$store.state.userInfo['token'],
+					handle: 'get',
+					page: that.currentPage,
+//					type: 6,
+//					name: '豪雅18K金镶坦桑石钻石戒指',
+//					price: 9800.00,
+//					purchased: 1,
+//					inventory: 10,
+//					poster: 'https://cdn.ctfmall.com/thumb/V102295.jpg',
+//					pic1: 'http://cdn.ctfeshop.com.cn/path/V102295.jpg',
+//					pic2: 'http://cdn.ctfeshop.com.cn/path/V102295a.jpg',
+				},
+				beforeSend () {
+					that.$store.commit('SHOW_LOADING');
+				}
+			}).then(res => {
+				if(res.type == 'success'){
+					that.shops = res.shops;
+					that.currentPage = res.currentPage;
+					that.shops.forEach((item,index) => {
+						that.$set(that.shops[index],'preview',item.preview.split(','));
+						that.$set(that.shops[index],'size',item.size.split(','));
+						that.$set(that.shops[index],'isLoaded',false);
+					});
+					that.$nextTick(() => {
+						that.loadImage();
+					});
+				}else{
+					if(res.status == 1)
+						setTimeout(() => {
+							that.$router.push({name: 'Login'});
+						},1000);
+					that.$store.commit('SHOW_TOAST',{
+						text: res.msg
+					});
+				}
+				that.$store.commit('HIDE_LOADING');
+			}).catch(status => {
+				that.$store.commit('HIDE_LOADING');
+				that.$store.commit('SHOW_TOAST',{
+					text: status
+				});
 			});
 		},
 		methods: {
 			loadImage () {
-				let imgs = this.$refs.scrollContainer.querySelectorAll('.list img');
+				let lis = this.$refs.scrollContainer.children[1].children;
 				let winH = this.$refs.scrollContainer.scrollTop + this.$refs.scrollContainer.clientHeight;
-				for(let i = 0; i < imgs.length; i++)
-					if(winH >= imgs[i].offsetTop)
+				for(let i = 0; i < lis.length; i++)
+					if(winH >= lis[i].offsetTop)
 						this.shops[i].isLoaded = true;
 			},
 			throttle(func,delay,minInterval){
@@ -102,7 +149,7 @@
 				}
 			},
 			lazyLoad () {
-				this.throttle(this.loadImage(),200,1000);
+				this.throttle(this.loadImage(),20000,30000);
 			},
 			typeClick (index) {
 				this.sidebar_show = false;
@@ -115,7 +162,7 @@
 				this.loadImage();
 			},
 			shopClick (item) {
-				this.$router.push({name: 'ShopDetail',params: item});
+				this.$router.push({name: 'ShopDetail',params: {shop: item}});
 			},
 		},
 		computed: {

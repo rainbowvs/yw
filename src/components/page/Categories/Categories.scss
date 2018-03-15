@@ -65,40 +65,38 @@
             }
         }
         &>.list{
-            &>ul{
-                padding: 0 5px;
+            padding: 0 5px;
+            box-sizing: border-box;
+            @include flex(row,flex-start);
+            flex-wrap: wrap;
+            &>li{
+                width: 50%;
+                @include flex(row);
+                padding: 5px;
                 box-sizing: border-box;
-                @include flex(row,flex-start);
-                flex-wrap: wrap;
-                &>li{
-                    width: 50%;
-                    @include flex(row);
-                    padding: 5px;
-                    box-sizing: border-box;
-                    &>a{
+                &>a{
+                    width: 100%;
+                    @include flex(column,flex-start);
+                    background-color: #fff;
+                    &>img{
                         width: 100%;
-                        @include flex(column,flex-start);
-                        background-color: #fff;
-                        &>img{
-                            width: 100%;
-                            vertical-align: middle;
-                            background: url('../../../../static/img/imgLoading.png') no-repeat center center;
-                            background-size: 40%;
-                        }
-                        &>h6{
-                            padding: 0 3px;
-                            box-sizing: border-box;
-                            text-align: center;
-                            width: 100%;
-                            font-size: 14px;
-                            color: #333;
-                            @include ellipsis();
-                        }
-                        &>span{
-                            margin: 5px;
-                            font-size: 14px;
-                            color: $seThemeColor;  
-                        }
+                        vertical-align: middle;
+                        background: url('../../../../static/img/imgLoading.png') no-repeat center center;
+                        background-size: 40%;
+                    }
+                    &>h6{
+                        padding: 0 3px;
+                        box-sizing: border-box;
+                        text-align: center;
+                        width: 100%;
+                        font-size: 14px;
+                        color: #333;
+                        @include ellipsis();
+                    }
+                    &>span{
+                        margin: 5px;
+                        font-size: 14px;
+                        color: $seThemeColor;  
                     }
                 }
             }
