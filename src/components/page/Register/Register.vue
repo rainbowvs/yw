@@ -113,6 +113,7 @@
 				if(!(that.checkPhone(that.phone) && that.checkName(that.name) && that.checkPwd(that.pwd)))
 					return false;
 				that.$ajax({
+					name: '注册',
 					url: window.reqUrl + 'register.php',
 					data: {
 						phone: that.phone,
@@ -123,14 +124,15 @@
 						that.$store.commit('SHOW_LOADING');
 					}
 				}).then(res => {
-					console.log(res);
 					if(res.type == 'success'){
 						that.$store.commit('SHOW_TOAST',{
 							text: res.msg
 						});
 						//存储用户信息
 						window.localStorage.setItem('userInfo',JSON.stringify(res.userInfo));
-						that.$router.push({name: 'User'});
+						setTimeout(() => {
+							that.$router.push({name: 'User'});
+						},1000);
 					}else{
 						that.$store.commit('SHOW_TOAST',{
 							text: res.msg
