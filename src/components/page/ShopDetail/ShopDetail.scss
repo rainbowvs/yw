@@ -29,12 +29,16 @@
                         font-size: 14px;
                         color: $seThemeColor;
                     }
+                    &>.size{
+                        white-space: nowrap;
+                    }
                     &>dl{
                         @include flex(row,flex-start);
+                        flex-wrap: wrap;
                         &>dd{
                             box-sizing: border-box;
-                            margin: 0 4px;
-                            padding: 5px;
+                            margin: 5px;
+                            padding: 7px 10px;
                             border: 1px solid $borderColor;
                             border-radius: 5px;
                             line-height: 1;
@@ -42,12 +46,6 @@
                             background-color: #fff;
                             &.active{
                                 border-color: $seThemeColor;
-                            }
-                            &:first-of-type{
-                                margin-left: 0;
-                            }
-                            &:last-of-type{
-                                margin-right: 0;
                             }
                         }
                     }
@@ -91,9 +89,9 @@
         &>.info{
             border-top: 1px solid #aaa;
             &>h6{
-                margin: 5px 0;
+                margin: 15px 0;
                 text-align: center;
-                font-size: 14px;
+                font-size: 16px;
             }
             &>ul{
                 &>li{
@@ -101,7 +99,7 @@
                     padding: 0 6px;
                     font-size: 14px;
                     @include flex(row,flex-start);
-                    height: 30px;
+                    height: 40px;
                     &>i{
                         margin-left: 2px;
                         text-align: left;
@@ -120,16 +118,16 @@
         &>.pics{
             border-top: 1px solid #aaa;
             &>h6{
-                margin: 5px 0;
+                margin: 15px 0;
                 text-align: center;
-                font-size: 14px;
+                font-size: 16px;
             }
             &>ul{
                 &>li{
                     &>img{
                         background: url('../../../../static/img/imgLoading.png') no-repeat center center;
                         background-size: 40%;
-                        min-height: 320px;
+                        min-height: 60px;
                         vertical-align: middle;
                         width: 100%;
                         border-top: 1px solid #ddd;
@@ -137,29 +135,31 @@
                 }
             }
         }
-        &>.comment{
+        &>.evaluate{
             border-top: 1px solid #aaa;
             &>h6{
-                margin: 5px 0;
+                margin: 15px 0;
                 text-align: center;
-                font-size: 14px;
+                font-size: 16px;
             }
             &>ul{
                 &>li{
                     @include flex(column,center,flex-start);
-                    padding: 3px 10px;
+                    padding: 10px;
                     border-top: 1px solid #F1EDEC;
                     &>i{
                         font-size: 14px;
-                        color: #999;
+                        color: $seThemeColor;
                         font-style: normal;
                     }
                     &>p{
                         text-align: left;
                         font-size: 14px;
-                        margin: 5px 0;
+                        margin: 10px 0;
                     }
                     &>span{
+                        width: 100%;
+                        text-align: right;
                         font-size: 12px;
                         color: #999;
                     }

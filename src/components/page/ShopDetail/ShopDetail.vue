@@ -9,21 +9,16 @@
 			<h1 slot="mid">商品详情</h1>
 		</my-header>
 		<div class="container">
-			<img src="https://cdn.ctfmall.com/thumb2/AB35097.jpg" class="preview"/>
+			<img :src="shop.preview[0]" class="preview"/>
 			<div class="spec">
 				<ul>
-					<li><h6>越王珠宝BG001 18K金共33分FG色 钻石女戒</h6></li>
-					<li>价格：<span class="price">￥6896.00</span></li>
-					<li>库存：450件</li>
+					<li><h6 v-text="shop.name"></h6></li>
+					<li>价格：<span class="price">￥{{shop.price}}</span></li>
+					<li>库存：{{shop.inventory}}件</li>
 					<li>
+						<div class="size">圈口：</div>
 						<dl>
-							<dt>圈口：</dt>
-							<dd class="active">11</dd>
-							<dd>12</dd>
-							<dd>13</dd>
-							<dd>14</dd>
-							<dd>15</dd>
-							<dd>16</dd>
+							<dd v-for="v,i in shop.size" :class="{active: focus==i}" @click="sizeClick(i)" v-text="v"></dd>
 						</dl>
 					</li>
 					<li>
@@ -40,19 +35,19 @@
 				<h6>——详细参数——</h6>
 				<ul>
 					<li>
-						<i>模号：</i><span>F156901</span>
+						<i>模号：</i><span v-text="shop.model"></span>
 					</li>
 					<li>
-						<i>款式：</i><span>戒指</span>
+						<i>材质：</i><span v-text="shop.material"></span>
 					</li>
 					<li>
-						<i>系列：</i><span>无</span>
+						<i>款式：</i><span v-text="shop.style"></span>
 					</li>
 					<li>
-						<i>重量：</i><span>约2g</span>
+						<i>重量：</i><span>约{{shop.mass}}g</span>
 					</li>
 					<li>
-						<i>工费：</i><span>￥48.00</span>
+						<i>工费：</i><span>￥{{shop.processingCost}}</span>
 					</li>
 					<li>
 						<i>售后服务：</i><span>专柜联保 店铺保修 </span>
@@ -62,18 +57,12 @@
 			<div class="pics">
 				<h6>——商品图片——</h6>
 				<ul>
-					<li>
-						<img src="http://cdn.ctfeshop.com.cn/path/AB35097.jpg"/>
-					</li>
-					<li>
-						<img src="http://cdn.ctfeshop.com.cn/path/AB35097a.jpg"/>
-					</li>
-					<li>
-						<img src="http://cdn.ctfeshop.com.cn/path/AB35097b.jpg"/>
+					<li v-for="v,i in shop.preview">
+						<img :src="v" v-if="i>0" />
 					</li>
 				</ul>
 			</div>
-			<div class="comment">
+			<div class="evaluate">
 				<h6>——买家评论——</h6>
 				<ul>
 					<li>
@@ -106,14 +95,23 @@
 	export default {
 		data () {
 			return {
+				shop: null,
 				amount: 1,
+				focus: 0,
 			}
 		},
+		created () {
+			let that = this;
+			that.shop = that.$route.params.shop;
+		},
 		mounted () {
-			this.addFunc(450,500,100);
+			this.addFunc(this.shop.inventory,500,100);
 			this.subtractFunc(500,100);
 		},
 		methods: {
+			sizeClick (index) {
+				this.focus = index;
+			},
 			addCart () {
 				this.$store.commit('SHOW_TOAST',{
 					text: '加入购物车成功',
@@ -130,8 +128,8 @@
 					this.amount = 1;
 				if(/^[0]+/g.test(this.amount))
 					this.amount = this.amount.replace(/^[0]+/g,"");
-				if(this.amount > 450)
-					this.amount = 450;
+				if(this.amount > this.shop.inventory)
+					this.amount = this.shop.inventory;
 				if(this.amount < 1)
 					this.amount = 1;
 			},
