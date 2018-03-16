@@ -5,12 +5,13 @@
 <template>
 	<div class="cart">
 		<my-header>
-			<span slot="left" @click="clean">清空</span>
+			<span slot="left"></span>
+			<span slot="right" @click="clean">清空</span>
 			<h1 slot="mid">购物车</h1>
 		</my-header>
 		<div class="container">
 			<div class="list">
-				<h2 @click="checkedAll=!checkedAll">
+				<h2 @click="checkedAllClick">
 					<template v-if="checkedAll">
 						<i class="yuewang icon-checkbox-checked checkbox"></i>
 					</template>
@@ -22,20 +23,21 @@
 				<ul>
 					<li v-for="shop,index in shops">
 						<template v-if="shop.isChecked">
-							<i class="yuewang icon-checkbox-checked checkbox" @click="checkedClick(shop)"></i>
+							<i class="yuewang icon-checkbox-checked checkbox" @click="checkedClick(shop,index)"></i>
 						</template>
 						<template v-else>
-							<i class="yuewang icon-checkbox checkbox" @click="checkedClick(shop)"></i>
+							<i class="yuewang icon-checkbox checkbox" @click="checkedClick(shop,index)"></i>
 						</template>
 						<div class="info">
 							<img :src="shop.poster" />
 							<div class="text">
 								<p v-text="shop.name"></p>
-								<span>￥{{shop.price}}</span>
+								<em v-text="`圈口：${shop.size}`"></em>
+								<span v-text="`￥${shop.price}`"></span>
 								<form>
-									<a ref="subtract" href="javascript:;" class="subtract" @touchstart="subtractStartFunc($event,shop,500,100)" @touchend="subtractEndFunc(shop)">-</a>
+									<a ref="subtract" href="javascript:;" class="subtract" @touchstart="subtractStartFunc($event,shop,index,500,100)" @touchend="subtractEndFunc(shop)">-</a>
 									<input type="text" class="amount" v-model.number="shop.amount" maxlength="3" />
-									<a ref="add" href="javascript:;" class="add" @touchstart="addStartFunc($event,shop,450,500,100)" @touchend="addEndFunc(shop)">+</a>
+									<a ref="add" href="javascript:;" class="add" @touchstart="addStartFunc($event,shop,shop.inventory,index,500,100)" @touchend="addEndFunc(shop)">+</a>
 								</form>
 							</div>
 						</div>
@@ -47,7 +49,7 @@
 		<div class="footer">
 			<div class="left">
 				<span>合计：</span>
-				<em>￥{{0}}</em>
+				<em>￥{{sum}}</em>
 			</div>
 			<div class="right" @click="balanceClick">
 				<a href="javascript:;">结算</a>
@@ -62,21 +64,12 @@
 	export default {
 		data () {
 			return {
-				shops: [
-					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
-					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
-					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
-					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
-					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
-					{id: 0,name: '车花心形黄金足金戒指车花心形黄金足金戒指车花心形黄金足金戒指',price: '760.00',poster: 'https://cdn.ctfmall.com/thumb/F156901.jpg',amount: 1,circumference: 11,timer: null,isChecked: false,},
-				],
+				
 			}
-		},
-		created () {
-			
 		},
 		methods: {
 			balanceClick () {
+				//点击结算按钮事件
 				let that = this;
 				that.$store.commit('SET_ORDERCONFIRMBACKNAME',{
 					name: 'Cart',
@@ -84,17 +77,36 @@
 				that.$router.push({name: 'OrderConfirm'});
 			},
 			ok (n) {
-				this.shops.splice(n,1);
+				//点击确认删除按钮事件
+				this.$store.commit('DELETE_SHOPCART',{
+					index: n
+				});
 				this.$refs.dialog.close();
 			},
 			deleteClick (n) {
+				//点击删除选中商品按钮事件
 				this.$refs.dialog.open({
 					text: '确认要删除该商品',
 					params: n,
 				});
 			},
-			checkedClick (item) {
+			checkedAllClick () {
+				//点击全选按钮事件
+				this.checkedAll = !this.checkedAll;
+				this.shops.forEach((v,i) => {
+					this.$store.commit('UPDATE_SHOPCART',{
+						index: i,
+						isChecked : this.checkedAll,
+					});
+				});
+			},
+			checkedClick (item,index) {
+				//点击选中商品按钮事件
 				item.isChecked = !item.isChecked;
+				this.$store.commit('UPDATE_SHOPCART',{
+					index: index,
+					isChecked : item.isChecked,
+				});
 			},
 			amountInput (e) {
 //				setTimeout(() => {
@@ -102,47 +114,76 @@
 //					e.target.scrollIntoView(false);
 //				},300);
 			},
-			addStartFunc (e,item,max,delay,interval) {
+			addStartFunc (e,item,max,index,delay,interval) {
 				let previous = null;
 				item.timer = setInterval(() => {
 					let now = +new Date();
 					if(!previous)
 						previous = now;
 					if( now - previous > delay ){
-						if(item.amount > 0 && item.amount < max)
+						if(item.amount > 0 && item.amount < max){
 							item.amount++;
+							this.$store.commit('UPDATE_SHOPCART',{
+								index: index,
+								amount : item.amount,
+							});
+						}
 					}
 				},interval);
-				if(item.amount > 0 && item.amount < max)
+				if(item.amount > 0 && item.amount < max){
 					item.amount++;
+					this.$store.commit('UPDATE_SHOPCART',{
+						index: index,
+						amount : item.amount,
+					});
+				}
 			},
 			addEndFunc (item) {
 				clearInterval(item.timer);
 				item.timer = null;
 			},
-			subtractStartFunc (e,item,delay,interval) {
+			subtractStartFunc (e,item,index,delay,interval) {
 				let previous = null;
 				item.timer = setInterval(() => {
 					let now = +new Date();
 					if(!previous)
 						previous = now;
 					if( now - previous > delay ){
-						if(item.amount > 1)
+						if(item.amount > 1){
 							item.amount--;
+							this.$store.commit('UPDATE_SHOPCART',{
+								index: index,
+								amount : item.amount,
+							});
+						}
 					}
 				},interval);
-				if(item.amount > 1)
+				if(item.amount > 1){
 					item.amount--;
+					this.$store.commit('UPDATE_SHOPCART',{
+						index: index,
+						amount : item.amount,
+					});
+				}
 			},
 			subtractEndFunc (item) {
 				clearInterval(item.timer);
 				item.timer = null;
 			},
 			clean () {
-				this.shops = [];
+				//点击清空购物车按钮事件
+				this.shops.splice(0,this.shops.length);
+				window.localStorage.setItem('shopCart',JSON.stringify([]));
 			},
 		},
 		computed: {
+			shops () {
+				return this.$store.state.shopCart;
+			},
+			sum () {
+				//所有选中的商品的总价
+				return this.$store.getters.sum;
+			},
 			checkedAll: {
 				get () {
 					if(this.checkedCount == this.shops.length){
