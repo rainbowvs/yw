@@ -22,13 +22,18 @@
 					<label for="address">详细地址：</label>
 					<input type="text" id="address" v-model="address" />
 				</li>
-				<li>
-					<i class="yuewang icon-radio-checked"></i>
+				<li @click="acquiescent=!acquiescent">
+					<template v-if="acquiescent">
+						<i class="yuewang icon-radio-checked"></i>
+					</template>
+					<template v-else>
+						<i class="yuewang icon-radio"></i>
+					</template>
 					<span>设为默认</span>
 				</li>
 			</ul>
 		</div>
-		<div class="footer">
+		<div class="footer" @click="save">
 			<a href="javascript:;">保存</a>
 		</div>
 	</div>
@@ -39,15 +44,53 @@
 	export default {
 		data () {
 			return {
-				name: '',
-				phone: '',
-				address: '',
+				name: '阿里巴巴',
+				phone: '15099976289',
+				address: '中国杭州市滨江区网商路699号',
+				acquiescent: true,
 			}
 		},
 		created () {
 			
 		},
 		methods: {
+			save () {
+				let that = this;
+				that.$ajax({
+					name: '新增收货地址',
+					url: window.reqUrl + 'address.php',
+					data: {
+						handle: 'set',
+						id: that.$store.state.userInfo['id'],
+						phone: that.phone,
+						name: that.name,
+						address: that.address,
+						acquiescent: that.acquiescent,
+						token: that.$store.state.userInfo['token'],
+					},
+					beforeSend () {
+						that.$store.commit('SHOW_LOADING');
+					}
+				}).then(res => {
+					if(res.type == 'success'){
+						
+					}else{
+						if(res.status == 1)
+							setTimeout(() => {
+								that.$router.push({name: 'Login'});
+							},1000);
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+					}
+					that.$store.commit('HIDE_LOADING');
+				}).catch(status => {
+					that.$store.commit('HIDE_LOADING');
+					that.$store.commit('SHOW_TOAST',{
+						text: status
+					});
+				});
+			},
 			goBack () {
 				this.$router.push({name: 'Address'});
 			},
