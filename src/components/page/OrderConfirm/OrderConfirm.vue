@@ -36,22 +36,30 @@
 				</div>
 			</div>
 			<div class="shopInfo">
-				<ul>
+				<ul v-for="v,i in shopCart" v-if="v.isChecked">
 					<li>
-						<span>名称: </span>
-						<em>猴赛雷黄金足金吊坠</em>
+						<span>图片预览: </span>
+						<img :src="v.poster"/>
 					</li>
 					<li>
-						<span>规格: </span>
-						<em>材质黄金</em>
+						<span>名称: </span>
+						<em v-text="v.name"></em>
+					</li>
+					<li>
+						<span>材质: </span>
+						<em v-text="v.material"></em>
 					</li>
 					<li>
 						<span>数量: </span>
-						<em>20</em>
+						<em v-text="v.amount"></em>
+					</li>
+					<li>
+						<span>重量: </span>
+						<em v-text="`约${v.mass}g`"></em>
 					</li>
 					<li>
 						<span>金额: </span>
-						<em>￥20</em>
+						<em v-text="`￥${v.price}`"></em>
 					</li>
 				</ul>
 			</div>
@@ -75,7 +83,7 @@
 		<div class="footer">
 			<div class="left">
 				<span>合计：</span>
-				<em>￥20</em>
+				<em v-text="`￥${sum}`"></em>
 			</div>
 			<div class="right">
 				立即支付
@@ -93,7 +101,37 @@
 			}
 		},
 		created () {
-			
+			this.$ajax({
+				name: '获取商品列表',
+				url: window.reqUrl + 'shop.php',
+				data: {
+					phone: this.$store.state.userInfo['phone'],
+					token: this.$store.state.userInfo['token'],
+					handle: 'get',
+					page: this.currentPage,
+				},
+				beforeSend () {
+					this.$store.commit('SHOW_LOADING');
+				}
+			}).then(res => {
+				if(res.type == 'success'){
+					
+				}else{
+					if(res.status == 1)
+						setTimeout(() => {
+							this.$router.push({name: 'Login'});
+						},1000);
+					this.$store.commit('SHOW_TOAST',{
+						text: res.msg
+					});
+				}
+				this.$store.commit('HIDE_LOADING');
+			}).catch(status => {
+				this.$store.commit('HIDE_LOADING');
+				this.$store.commit('SHOW_TOAST',{
+					text: status
+				});
+			});
 		},
 		methods: {
 			AddressClick () {
@@ -108,8 +146,17 @@
 				that.$router.push({name: that.$store.state.OrderConfirmBackName});
 			},
 		},
+		computed: {
+			shopCart () {
+				return this.$store.state.shopCart;
+			},
+			sum () {
+				//所有选中的商品的总价
+				return this.$store.getters.sum;
+			},
+		},
 		components: {
 			'my-header': Header,
-		}
+		},
 	}
 </script>
