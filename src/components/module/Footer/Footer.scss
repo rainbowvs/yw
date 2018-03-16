@@ -9,6 +9,7 @@
         height: 100%;
         @include flex(row,space-around);
         &>li{
+            position: relative;
             width: 25%;
             height: inherit;
             @include flex(column,center);
@@ -19,12 +20,29 @@
                 &>span{
                     color: $seThemeColor;
                 }
+                &>em{
+                    background-color: $seThemeColor;
+                }
             }
             &>i{
                 font-size: 22px;
             }
             &>span{
                 font-size: 12px;
+            }
+            &>em{
+                @include flex(row);
+                position: absolute;
+                box-sizing: border-box;
+                padding: 2px 6px;
+                border-radius: 10px;
+                background-color: #bbbfc4;
+                color: #fff;
+                right: 18%;
+                top: 6%;
+                font-style: normal;
+                font-size: 12px;
+                line-height: 1;
             }
         }
     }

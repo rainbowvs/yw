@@ -16,6 +16,7 @@
 			<li :class="{'active': $route.name == 'Cart'}" @click="goCart">
 				<i class="yuewang icon-cart"></i>
 				<span>购物车</span>
+				<em v-text="count" v-if="count > 0"></em>
 			</li>
 			<li :class="{'active': $route.name == 'User'}" @click="goUser">
 				<i class="yuewang icon-my"></i>
@@ -32,9 +33,6 @@
 				
 			}
 		},
-		created () {
-			
-		},
 		methods: {
 			goHome () {
 				this.$router.push({name: 'Home'});
@@ -47,6 +45,11 @@
 			},
 			goUser () {
 				this.$router.push({name: 'User'});
+			},
+		},
+		computed: {
+			count () {
+				return this.$store.state.shopCart.length;
 			},
 		}
 	}
