@@ -113,6 +113,18 @@
 				this.focus = index;
 			},
 			addCart () {
+				this.$store.commit('ADD_SHOPCART',{
+					id: this.shop.id,
+					price: this.shop.price,
+					size: this.shop.size[this.focus],
+					amount: this.amount,
+					name: this.shop.name,
+					mass: this.shop.mass,
+					material: this.shop.material,
+					poster: this.shop.poster,
+					inventory: this.shop.inventory,
+					isChecked: true,
+				});
 				this.$store.commit('SHOW_TOAST',{
 					text: '加入购物车成功',
 				});
@@ -183,6 +195,11 @@
 		},
 		components: {
 			'my-header': Header,
+		},
+		computed: {
+			shopCart () {
+				return this.$store.state.shopCart;
+			}
 		}
 	}
 </script>
