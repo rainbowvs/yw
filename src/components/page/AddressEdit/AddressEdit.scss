@@ -16,8 +16,10 @@
                 padding: 0 15px;
                 height: 40px;
                 @include flex(row,flex-start);
-                &:last-child{
-                    border-bottom: none;
+                &.acquiescent{
+                    &>i,&>span{
+                        color: $themeColor;
+                    }
                 }
                 &>label{
                     @include flex(row);
@@ -35,6 +37,19 @@
                         font-size: 14px;
                         line-height: 1;
                     }
+                }
+                &>i{
+                    @include flex(row);
+                    height: 100%;
+                    font-size: 18px;
+                    color: #666;
+                }
+                &>span{
+                    color: #666;
+                    margin-left: 5px;
+                    @include flex(row);
+                    height: 100%;
+                    font-size: 14px;
                 }
             }
         }
