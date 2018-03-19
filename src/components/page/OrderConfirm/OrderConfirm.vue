@@ -13,11 +13,11 @@
 				<div class="top" @click="AddressClick">
 					<i class="yuewang icon-location"></i>
 					<h2>
-						<template v-if="false">
-							请填写收货地址
+						<template v-if="addressInfo">
+							{{addressInfo.address}}
 						</template>
 						<template v-else>
-							广州市白云区松洲街广州市白云区松洲街广州市白云区松洲街广州市白云区松洲街
+							请填写收货地址
 						</template>
 					</h2>
 					<i class="yuewang icon-enter"></i>
@@ -26,11 +26,25 @@
 					<ul>
 						<li>
 							<span>收货人: </span>
-							<em>张三</em>
+							<em>
+								<template v-if="addressInfo">
+									{{addressInfo.name}}
+								</template>
+								<template v-else>
+									请填写收货人
+								</template>
+							</em>
 						</li>
 						<li>
 							<span>手机号码: </span>
-							<em>15099976289</em>
+							<em>
+								<template v-if="addressInfo">
+									{{addressInfo.phone}}
+								</template>
+								<template v-else>
+									请填写收货人联系电话
+								</template>
+							</em>
 						</li>
 					</ul>
 				</div>
@@ -50,12 +64,16 @@
 						<em v-text="v.material"></em>
 					</li>
 					<li>
-						<span>数量: </span>
-						<em v-text="v.amount"></em>
-					</li>
-					<li>
 						<span>重量: </span>
 						<em v-text="`约${v.mass}g`"></em>
+					</li>
+					<li>
+						<span>圈口: </span>
+						<em v-text="v.size"></em>
+					</li>
+					<li>
+						<span>数量: </span>
+						<em v-text="v.amount"></em>
 					</li>
 					<li>
 						<span>金额: </span>
@@ -75,7 +93,7 @@
 					</li>
 					<li>
 						<span>买家留言: </span>
-						<input type="text" placeholder="如: 刻字要求等等" />
+						<input type="text" v-model="remark" placeholder="如: 刻字要求等等" />
 					</li>
 				</ul>
 			</div>
@@ -85,7 +103,7 @@
 				<span>合计：</span>
 				<em v-text="`￥${sum}`"></em>
 			</div>
-			<div class="right">
+			<div class="right" @click="payClick">
 				立即支付
 			</div>
 		</div>
@@ -97,44 +115,108 @@
 	export default {
 		data () {
 			return {
-				
+				addressInfo: undefined,
+				remark: '',
 			}
 		},
 		created () {
-			this.$ajax({
-				name: '获取商品列表',
-				url: window.reqUrl + 'shop.php',
-				data: {
-					phone: this.$store.state.userInfo['phone'],
-					token: this.$store.state.userInfo['token'],
-					handle: 'get',
-					page: this.currentPage,
-				},
-				beforeSend () {
-					this.$store.commit('SHOW_LOADING');
-				}
-			}).then(res => {
-				if(res.type == 'success'){
-					
-				}else{
-					if(res.status == 1)
-						setTimeout(() => {
-							this.$router.push({name: 'Login'});
-						},1000);
-					this.$store.commit('SHOW_TOAST',{
-						text: res.msg
+			let that = this;
+			
+			let addressInfo = that.$route.params.addressInfo;
+			if(addressInfo){
+				//如果另选其他收货地址
+				that.addressInfo = addressInfo;
+			}else{
+				//获取默认地址
+				that.$ajax({
+					name: '获取默认收货地址',
+					url: window.reqUrl + 'address.php',
+					data: {
+						handle: 'getAcquiescent',
+						uid: that.$store.state.userInfo['id'],
+						token: that.$store.state.userInfo['token'],
+					},
+					beforeSend () {
+						that.$store.commit('SHOW_LOADING');
+					}
+				}).then(res => {
+					if(res.type == 'success'){
+						that.addressInfo = res.addressInfo;
+					}else{
+						if(res.status == 1)
+							setTimeout(() => {
+								that.$router.push({name: 'Login'});
+							},1000);
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+					}
+					that.$store.commit('HIDE_LOADING');
+				}).catch(status => {
+					that.$store.commit('HIDE_LOADING');
+					that.$store.commit('SHOW_TOAST',{
+						text: status
 					});
-				}
-				this.$store.commit('HIDE_LOADING');
-			}).catch(status => {
-				this.$store.commit('HIDE_LOADING');
-				this.$store.commit('SHOW_TOAST',{
-					text: status
 				});
-			});
+			}
 		},
 		methods: {
+			payClick () {
+				let that = this;
+				
+				let shops = [];
+				that.shopCart.forEach((v,i) => {
+					shops.push({
+						id: v.id,
+						amount: v.amount,
+						size: v.size,
+					});
+				});
+				shops = JSON.stringify(shops);
+				
+				that.$ajax({
+					name: '提交订单',
+					url: window.reqUrl + 'order.php',
+					data: {
+						handle: 'set',
+						uid: that.$store.state.userInfo['id'],
+						token: that.$store.state.userInfo['token'],
+						shops: shops,
+						aid: that.addressInfo['id'],
+						state: 0,
+						totalPrice: that.sum,
+						remark: that.remark,
+					},
+					beforeSend () {
+						that.$store.commit('SHOW_LOADING');
+					}
+				}).then(res => {
+					if(res.type == 'success'){
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+						setTimeout(() => {
+							that.$router.push({name: 'User'});
+						},1000);
+					}else{
+						if(res.status == 1)
+							setTimeout(() => {
+								that.$router.push({name: 'Login'});
+							},1000);
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+					}
+					that.$store.commit('HIDE_LOADING');
+				}).catch(status => {
+					that.$store.commit('HIDE_LOADING');
+					that.$store.commit('SHOW_TOAST',{
+						text: status
+					});
+				});
+			},
 			AddressClick () {
+				//点击选择其他收货地址按钮事件
 				let that = this;
 				that.$store.commit('SET_ADDRESSBACKNAME',{
 					name: 'OrderConfirm',
