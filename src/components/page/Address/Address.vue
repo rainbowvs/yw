@@ -11,7 +11,7 @@
 		<div class="container">
 			<ul>
 				<li v-for="v,i in addresses">
-					<div class="top">
+					<div class="top" @click="addressClick(v,i)">
 						<div class="userInfo">
 							<span v-text="v.name"></span>
 							<em v-text="v.phone"></em>
@@ -19,8 +19,8 @@
 						<p v-text="v.address"></p>
 					</div>
 					<div class="bottom">
-						<div class="left">
-							<template v-if="v.isChecked">
+						<div class="left" @click="acquiescentClick(v,i)">
+							<template v-if="v.acquiescent">
 								<i class="yuewang icon-radio-checked checked"></i>
 								<span class="checked">默认地址</span>
 							</template>
@@ -30,11 +30,11 @@
 							</template>
 						</div>
 						<div class="right">
-							<span @click="$router.push({name: 'AddressEdit',params: {address: v}})">
+							<span @click="$router.push({name: 'AddressEdit',params: {address: v,show: !v.acquiescent}})">
 								<i class="yuewang icon-editor"></i>
 								<em>编辑</em>
 							</span>
-							<span>
+							<span @click="deleteClick(v,i)">
 								<i class="yuewang icon-recycle"></i>
 								<em>删除</em>
 							</span>
@@ -46,6 +46,7 @@
 		<div class="footer" @click="$router.push({name: 'AddressAdd'})">
 			<a href="javascript:;">新增收货地址</a>
 		</div>
+		<my-dialog ref="dialog" @sure="ok"></my-dialog>
 	</div>
 </template>
 
@@ -54,22 +55,168 @@
 	export default {
 		data () {
 			return {
-				addresses: [
-					{name: '张三',phone: '12345678911',address: '广东省广州市白云区金沙街道彩滨北路保利西海岸江岸花园122栋B梯1501房',isChecked: true,},
-					{name: '张三',phone: '12345678911',address: '广东省广州市白云区金沙街道彩滨北路保利西海岸江岸花园122栋B梯1501房',isChecked: false,},
-					{name: '张三',phone: '12345678911',address: '广东省广州市白云区金沙街道彩滨北路保利西海岸江岸花园122栋B梯1501房',isChecked: false,},
-					{name: '张三',phone: '12345678911',address: '广东省广州市白云区金沙街道彩滨北路保利西海岸江岸花园122栋B梯1501房',isChecked: false,},
-					{name: '张三',phone: '12345678911',address: '广东省广州市白云区金沙街道彩滨北路保利西海岸江岸花园122栋B梯1501房',isChecked: false,},
-					{name: '张三',phone: '12345678911',address: '广东省广州市白云区金沙街道彩滨北路保利西海岸江岸花园122栋B梯1501房',isChecked: false,},
-					{name: '张三',phone: '12345678911',address: '广东省广州市白云区金沙街道彩滨北路保利西海岸江岸花园122栋B梯1501房',isChecked: false,},
-					{name: '张三',phone: '12345678911',address: '广东省广州市白云区金沙街道彩滨北路保利西海岸江岸花园122栋B梯1501房',isChecked: false,},
-				],
+				addresses: [],
+				currentPage: 1,
+				totalPage: 2,
 			}
 		},
-		mounted () {
-			
+		created () {
+			let that = this;
+			that.$ajax({
+				name: '获取所有收货地址列表',
+				url: window.reqUrl + 'address.php',
+				data: {
+					handle: 'getAll',
+					uid: that.$store.state.userInfo['id'],
+					token: that.$store.state.userInfo['token'],
+					page: that.currentPage,
+				},
+				beforeSend () {
+					that.$store.commit('SHOW_LOADING');
+				}
+			}).then(res => {
+				if(res.type == 'success'){
+					res.addresses.forEach((v,i) => {
+						if(v.acquiescent == 0)
+							that.addresses.push({
+								id: v.id,
+								name: v.name,
+								phone: v.phone,
+								address: v.address,
+								acquiescent: false,
+								uid: v.uid,
+								c_date: v.c_date,
+							});
+						else
+							that.addresses.unshift({
+								id: v.id,
+								name: v.name,
+								phone: v.phone,
+								address: v.address,
+								acquiescent: true,
+								uid: v.uid,
+								c_date: v.c_date,
+							});
+							
+					});
+				}else{
+					if(res.status == 1)
+						setTimeout(() => {
+							that.$router.push({name: 'Login'});
+						},1000);
+					that.$store.commit('SHOW_TOAST',{
+						text: res.msg
+					});
+				}
+				that.$store.commit('HIDE_LOADING');
+			}).catch(status => {
+				that.$store.commit('HIDE_LOADING');
+				that.$store.commit('SHOW_TOAST',{
+					text: status
+				});
+			});
 		},
 		methods: {
+			addressClick (item,index) {
+				//点击选择收货地址事件
+				this.$router.push({name: 'OrderConfirm',params: {addressInfo: item}});
+			},
+			ok (params) {
+				//确认删除按钮事件
+				let that = this;
+				that.$ajax({
+					name: '删除收货地址',
+					url: window.reqUrl + 'address.php',
+					data: {
+						handle: 'delete',
+						uid: that.$store.state.userInfo['id'],
+						token: that.$store.state.userInfo['token'],
+						id: params['id'],
+					},
+					beforeSend () {
+						that.$store.commit('SHOW_LOADING');
+					}
+				}).then(res => {
+					if(res.type == 'success'){
+						that.addresses.splice(params['index'],1);
+						that.$refs.dialog.close();
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+					}else{
+						if(res.status == 1)
+							setTimeout(() => {
+								that.$router.push({name: 'Login'});
+							},1000);
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+					}
+					that.$store.commit('HIDE_LOADING');
+				}).catch(status => {
+					that.$store.commit('HIDE_LOADING');
+					that.$store.commit('SHOW_TOAST',{
+						text: status
+					});
+				});
+			},
+			deleteClick (item,index) {
+				//点击删除地址按钮事件
+				this.$refs.dialog.open({
+					text: '确定要删除该收获地址？',
+					params: {
+						id: item['id'],
+						index: index,
+					},
+				});
+			},
+			acquiescentClick (item,index) {
+				//点击设为默认按钮事件
+				let that = this;
+				if(item.acquiescent == true)
+					return false;
+				that.$ajax({
+					name: '修改默认收货地址',
+					url: window.reqUrl + 'address.php',
+					data: {
+						handle: 'update',
+						uid: that.$store.state.userInfo['id'],
+						token: that.$store.state.userInfo['token'],
+						id: item.id,
+						acquiescent: true,
+					},
+					beforeSend () {
+						that.$store.commit('SHOW_LOADING');
+					}
+				}).then(res => {
+					if(res.type == 'success'){
+						that.addresses.forEach((v,i) => {
+							if(v.acquiescent)
+								v.acquiescent = false;
+						});
+						item.acquiescent = true;
+						let temp = that.addresses.splice(index,1)[0];
+						that.addresses.splice(0,0,temp);
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+					}else{
+						if(res.status == 1)
+							setTimeout(() => {
+								that.$router.push({name: 'Login'});
+							},1000);
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+					}
+					that.$store.commit('HIDE_LOADING');
+				}).catch(status => {
+					that.$store.commit('HIDE_LOADING');
+					that.$store.commit('SHOW_TOAST',{
+						text: status
+					});
+				});
+			},
 			goBack () {
 				let that = this;
 				that.$router.push({name: that.$store.state.AddressBackName});
