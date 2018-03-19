@@ -22,7 +22,7 @@
 					<label for="address">详细地址：</label>
 					<input type="text" id="address" v-model="address" />
 				</li>
-				<li @click="acquiescent=!acquiescent">
+				<li @click="acquiescent=!acquiescent" :class="{acquiescent: acquiescent}">
 					<template v-if="acquiescent">
 						<i class="yuewang icon-radio-checked"></i>
 					</template>
@@ -33,8 +33,8 @@
 				</li>
 			</ul>
 		</div>
-		<div class="footer" @click="save">
-			<a href="javascript:;">保存</a>
+		<div class="footer" @click="sureClick">
+			<a href="javascript:;">确定</a>
 		</div>
 	</div>
 </template>
@@ -54,7 +54,7 @@
 			
 		},
 		methods: {
-			save () {
+			sureClick () {
 				let that = this;
 				that.$ajax({
 					name: '新增收货地址',
@@ -73,7 +73,12 @@
 					}
 				}).then(res => {
 					if(res.type == 'success'){
-						
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+						setTimeout(() => {
+							that.$router.push({name: 'Address'});
+						},1000);
 					}else{
 						if(res.status == 1)
 							setTimeout(() => {
