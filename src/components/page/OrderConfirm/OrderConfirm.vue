@@ -198,8 +198,8 @@
 						setTimeout(() => {
 							if(window.sessionStorage.getItem('addressInfo'))
 								window.sessionStorage.removeItem('addressInfo');
-							that.$store.commit('EMPTY_SHOPCART');
-							that.$store.commit('EMPTY_shopList');
+							if(this.$store.state.fromCart)
+								that.$store.commit('EMPTY_SHOPCART');
 							that.$router.push({name: 'User'});
 						},1000);
 					}else{

@@ -138,7 +138,6 @@
 					else
 						titem.isChecked = false;
 				});
-				this.loadImage();
 			},
 			shopClick (item) {
 				//点击选中商品事件

@@ -137,7 +137,9 @@
 							text: res.msg
 						});
 						//存储用户信息
-						window.localStorage.setItem('userInfo',JSON.stringify(res.userInfo));
+						that.$store.commit('SET_USERINFO',{
+							userInfo: res.userInfo,
+						});
 						setTimeout(() => {
 							that.$router.push({name: 'User'});
 						},1000);
