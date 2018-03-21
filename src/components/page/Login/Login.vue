@@ -10,13 +10,13 @@
 		</my-header>
 		<div class="container">
 			<form>
-				<div id="phone">
-					<i class="yuewang icon-my"></i>
-					<input type="text" v-model="phone" placeholder="请输入账号"/>
+				<div id="phone" :class="{focus: phoneFocus}">
+					<i class="yuewang icon-my" :class="{focus: phoneFocus}"></i>
+					<input type="text" v-model="phone" placeholder="请输入账号" @focus="phoneFocus=true" @blur="phoneFocus=false"/>
 				</div>
-				<div id="pwd">
-					<i class="yuewang icon-lock"></i>
-					<input type="password" v-model="pwd" placeholder="请输入密码"/>
+				<div id="pwd" :class="{focus: pwdFocus}">
+					<i class="yuewang icon-lock" :class="{focus: pwdFocus}"></i>
+					<input type="password" v-model="pwd" placeholder="请输入密码" @keyup="enterUp($event)" @focus="pwdFocus=true" @blur="pwdFocus=false"/>
 				</div>
 				<a href="javascript:;" @click="loginClick">登录</a>
 			</form>
@@ -33,15 +33,20 @@
 	export default {
 		data () {
 			return {
-				phone: '15099976289',
-				pwd: '062513',
+				phone: '',
+				pwd: '',
+				phoneFocus: false,
+				pwdFocus: false,
 			}
 		},
-		mounted () {
-			
-		},
 		methods: {
+			enterUp (e) {
+				//回车模拟点击登录
+				if(e.keyCode == 13)
+					this.loginClick();
+			},
 			loginClick () {
+				//点击登录按钮事件
 				let that = this;
 				if(!(that.checkPhone(that.phone) && that.checkPwd(that.pwd)))
 					return false;
@@ -61,7 +66,9 @@
 							text: res.msg
 						});
 						//存储用户信息
-						window.localStorage.setItem('userInfo',JSON.stringify(res.userInfo));
+						that.$store.commit('SET_USERINFO',{
+							userInfo: res.userInfo,
+						});
 						setTimeout(() => {
 							that.$router.push({name: 'User'});
 						},1000);

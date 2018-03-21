@@ -16,11 +16,17 @@
                 border-bottom: 1px solid $borderColor;
                 @include flex(row);
                 margin-bottom: 10%;
+                &.focus{
+                    border-color: $themeColor;
+                }
                 &>i{
                     flex: 1;
                     @include flex(row);
                     font-size: 26px;
                     height: 40px;
+                    &.focus{
+                        color: $themeColor;
+                    }
                 }
                 &>input{
                     flex: 5;

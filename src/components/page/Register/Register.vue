@@ -10,17 +10,17 @@
 		</my-header>
 		<div class="container">
 			<form>
-				<div id="phone">
-					<i class="yuewang icon-phone"></i>
-					<input type="text" v-model="phone" placeholder="请输入手机号码"/>
+				<div id="phone" :class="{focus: phoneFocus}">
+					<i class="yuewang icon-phone" :class="{focus: phoneFocus}"></i>
+					<input type="text" v-model="phone" placeholder="请输入手机号码" @focus="phoneFocus=true" @blur="phoneFocus=false"/>
 				</div>
-				<div id="name">
-					<i class="yuewang icon-my"></i>
-					<input type="text" v-model="name" placeholder="请输入昵称"/>
+				<div id="name" :class="{focus: nameFocus}">
+					<i class="yuewang icon-my" :class="{focus: nameFocus}"></i>
+					<input type="text" v-model="name" placeholder="请输入昵称" @focus="nameFocus=true" @blur="nameFocus=false"/>
 				</div>
-				<div id="pwd">
-					<i class="yuewang icon-lock"></i>
-					<input type="password" v-model="pwd" placeholder="请输入密码"/>
+				<div id="pwd" :class="{focus: pwdFocus}">
+					<i class="yuewang icon-lock" :class="{focus: pwdFocus}"></i>
+					<input type="password" v-model="pwd" placeholder="请输入密码" @keyup="enterUp($event)" @focus="pwdFocus=true" @blur="pwdFocus=false"/>
 				</div>
 				<a href="javascript:;" @click="registerClick">注册</a>
 			</form>
@@ -36,15 +36,23 @@
 	export default {
 		data () {
 			return {
-				phone: '15099976289',
-				name: 'rainbowvs',
-				pwd: '062513',
+				phone: '',
+				name: '',
+				pwd: '',
+				phoneFocus: false,
+				nameFocus: false,
+				pwdFocus: false,
 			}
 		},
 		created () {
 			
 		},
 		methods: {
+			enterUp (e) {
+				//回车模拟点击注册
+				if(e.keyCode == 13)
+					this.registerClick();
+			},
 			checkPhone (phone) {
 				if(phone == ''){
 					this.$store.commit('SHOW_TOAST',{
