@@ -15,10 +15,12 @@ const state = {
 		text: '',
 	},
 	timer: null,//计时器
-	userInfo: JSON.parse(window.localStorage.getItem('userInfo')),//用户信息
+	userInfo: window.sessionStorage['userInfo'] ? JSON.parse(window.sessionStorage['userInfo']) : {},//用户信息
 	AddressBackName: '',//收货地址管理页面返回页面名字
 	OrderConfirmBackName: '',//订单确认页面返回页面名字
-	shopCart: window.localStorage['shopCart'] ? JSON.parse(window.localStorage['shopCart']) : [],
+	shopCart: window.localStorage['shopCart'] ? JSON.parse(window.localStorage['shopCart']) : [],//购物车
+	buy: [],//立即购买
+	fromCart: false,//从购物车拿商品
 };
 
 const mutations = {
@@ -46,6 +48,14 @@ const mutations = {
 		//隐藏toast组件
 		clearTimeout(state.timer);
 		state.toastObj['show'] = false;
+	},
+	SET_USERINFO (state,obj) {
+		state['userInfo'] = obj['userInfo'];
+		window.sessionStorage.setItem('userInfo',JSON.stringify(state.userInfo));
+	},
+	DEL_USERINFO (state,obj) {
+		state['userInfo'] = {};
+		window.sessionStorage.setItem('userInfo',JSON.stringify(state.userInfo));
 	},
 	SET_ADDRESSBACKNAME (state,obj) {
 		//设定收货地址返回
@@ -94,14 +104,34 @@ const mutations = {
 		});
 		window.localStorage.setItem('shopCart',JSON.stringify(state.shopCart));
 	},
+	EMPTY_SHOPCART (state,obj) {
+		//清空购物车
+		state.shopCart = [];
+		window.localStorage.setItem('shopCart',JSON.stringify(state.shopCart));
+	},
+	SET_BUY (state,obj) {
+		//存放立即购买的商品信息
+		state.buy = [obj];
+	},
+	SET_FROMCART (state,bool) {
+		//设置是否从购物车拿商品
+		state.fromCart = bool;
+	},
 };
 const getters = {
 	sum : state => {
 		let totalPrice = 0;
-        state.shopCart.forEach((item) => {
-            if(item.isChecked)
-                totalPrice += item.price * item.amount
-        });
+		if(state.fromCart){
+			state.shopCart.forEach((item) => {
+			    if(item.isChecked)
+			        totalPrice += item.price * item.amount
+			});
+		}else{
+			state.buy.forEach((item) => {
+			    if(item.isChecked)
+			        totalPrice += item.price * item.amount
+			});
+		}
         return totalPrice;
 	},
 };
