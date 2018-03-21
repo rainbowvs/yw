@@ -14,7 +14,7 @@
 				<ul>
 					<li><h6 v-text="shop.name"></h6></li>
 					<li>价格：<span class="price">￥{{shop.price}}</span></li>
-					<li>库存：{{shop.inventory}}件</li>
+					<li>库存： {{shop.inventory}} 件</li>
 					<li>
 						<div class="size">圈口：</div>
 						<dl>
@@ -67,25 +67,25 @@
 				<ul>
 					<li>
 						<i>rainbowvs</i>
-						<p>很好,很满意,很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意很好,很满意</p>
-						<span>2017-01-01</span>
+						<p>很好,很满意</p>
+						<span>2017-06-26</span>
 					</li>
 					<li>
-						<i>rainbowvs</i>
-						<p>很好,很满意</p>
-						<span>2017-01-01</span>
+						<i>subpub</i>
+						<p>款式很漂亮</p>
+						<span>2017-03-01</span>
 					</li>
 					<li>
-						<i>rainbowvs</i>
-						<p>很好,很满意</p>
-						<span>2017-01-01</span>
+						<i>pppppd</i>
+						<p>老婆非常喜欢</p>
+						<span>2016-06-11</span>
 					</li>
 				</ul>
 			</div>
 		</div>
 		<div class="footer">
-			<a href="javascript:;" class="addCart" @click="addCart">加入购物车</a>
-			<a href="javascript:;" class="buy">立即购买</a>
+			<a href="javascript:;" class="addCart" @click="checkShop('addCartClick')">加入购物车</a>
+			<a href="javascript:;" class="buy" @click="checkShop('buyClick')">立即购买</a>
 		</div>
 	</div>
 </template>
@@ -98,21 +98,91 @@
 				shop: null,
 				amount: 1,
 				focus: 0,
+				disabled: false,
 			}
 		},
 		created () {
 			let that = this;
-			that.shop = that.$route.params.shop;
+			that.shop = JSON.parse(window.sessionStorage.getItem('focusItem'));
 		},
 		mounted () {
 			this.addFunc(this.shop.inventory,500,100);
 			this.subtractFunc(500,100);
 		},
 		methods: {
+			checkShop (type) {
+				//检查商品库存数量
+				let that = this;
+				
+				if(that.disabled)
+					return false;
+				
+				that.$ajax({
+					name: '检查商品库存数量',
+					url: window.reqUrl + 'shop.php',
+					data: {
+						handle: 'check',
+						uid: that.$store.state.userInfo['id'],
+						token: that.$store.state.userInfo['token'],
+						id: that.shop['id'],
+						amount: that.amount,
+					},
+					beforeSend () {
+						that.$store.commit('SHOW_LOADING');
+					}
+				}).then(res => {
+					if(res.type == 'success'){
+						if(type == 'buyClick')
+							that.buyClick();
+						else
+							that.addCartClick();
+					}else{
+						if(res.status == 1)
+							setTimeout(() => {
+								that.$router.push({name: 'Login'});
+							},1000);
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+						that.disabled = true;
+						setTimeout(() => {
+							that.disabled = false;
+						},4000);
+					}
+					that.$store.commit('HIDE_LOADING');
+				}).catch(status => {
+					that.$store.commit('HIDE_LOADING');
+					that.$store.commit('SHOW_TOAST',{
+						text: status
+					});
+				});
+			},
+			buyClick () {
+				//点击立即购买按钮事件
+				this.$store.commit('SET_BUY',{
+					id: this.shop.id,
+					price: this.shop.price,
+					size: this.shop.size[this.focus],
+					amount: this.amount,
+					name: this.shop.name,
+					mass: this.shop.mass,
+					material: this.shop.material,
+					poster: this.shop.poster,
+					inventory: this.shop.inventory,
+					isChecked: true,
+				});
+				this.$store.commit('SET_FROMCART',false);
+				this.$store.commit('SET_ORDERCONFIRMBACKNAME',{
+					name: 'ShopDetail',
+				});
+				this.$router.push({name: 'OrderConfirm'});
+			},
 			sizeClick (index) {
+				//点击选择圈口大小按钮事件
 				this.focus = index;
 			},
-			addCart () {
+			addCartClick () {
+				//点击加入购物车按钮事件
 				this.$store.commit('ADD_SHOPCART',{
 					id: this.shop.id,
 					price: this.shop.price,
@@ -190,7 +260,7 @@
 				},false);
 			},
 			goBack () {
-				this.$router.go(-1);
+				this.$router.push({name: 'Categories'});
 			},
 		},
 		components: {
