@@ -61,7 +61,7 @@
 					url: window.reqUrl + 'address.php',
 					data: {
 						handle: 'set',
-						id: that.$store.state.userInfo['id'],
+						uid: that.$store.state.userInfo['id'],
 						phone: that.phone,
 						name: that.name,
 						address: that.address,
