@@ -41,23 +41,28 @@
             }
         }
         &>.shopInfo{
-            background-color: #fff;
-            margin-top: 15px;
-            padding: 0 15px;
             &>ul{
+                background-color: #fff;
+                padding: 0 15px;
+                margin-top: 15px;
                 &>li{
                     border-bottom: 1px solid $borderColor;
                     box-sizing: border-box;
-                    padding: 0 5px;
-                    height: 40px;
+                    padding: 10px 5px;
                     @include flex(row,space-between);
                     &:last-child{
                         border: none;
                     }
+                    &>img{
+                        width: 30%;
+                    }
                     &>span{
+                        white-space: nowrap;
                         font-size: 14px;
                     }
                     &>em{
+                        text-align: right;
+                        margin-left: 15px;
                         font-size: 14px;
                         font-style: normal;
                         color: $themeColor;

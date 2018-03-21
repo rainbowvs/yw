@@ -50,7 +50,7 @@
 				</div>
 			</div>
 			<div class="shopInfo">
-				<ul v-for="v,i in shopCart" v-if="v.isChecked">
+				<ul v-for="v,i in shopList" v-if="v.isChecked">
 					<li>
 						<span>图片预览: </span>
 						<img :src="v.poster"/>
@@ -103,8 +103,8 @@
 				<span>合计：</span>
 				<em v-text="`￥${sum}`"></em>
 			</div>
-			<div class="right" @click="payClick">
-				立即支付
+			<div class="right" @click="submitClick">
+				提交订单
 			</div>
 		</div>
 	</div>
@@ -122,10 +122,10 @@
 		created () {
 			let that = this;
 			
-			let addressInfo = that.$route.params.addressInfo;
+			let addressInfo = window.sessionStorage.getItem('addressInfo');
 			if(addressInfo){
 				//如果另选其他收货地址
-				that.addressInfo = addressInfo;
+				that.addressInfo = JSON.parse(addressInfo);
 			}else{
 				//获取默认地址
 				that.$ajax({
@@ -161,11 +161,11 @@
 			}
 		},
 		methods: {
-			payClick () {
+			submitClick () {
 				let that = this;
 				
 				let shops = [];
-				that.shopCart.forEach((v,i) => {
+				that.shopList.forEach((v,i) => {
 					shops.push({
 						id: v.id,
 						amount: v.amount,
@@ -196,6 +196,10 @@
 							text: res.msg
 						});
 						setTimeout(() => {
+							if(window.sessionStorage.getItem('addressInfo'))
+								window.sessionStorage.removeItem('addressInfo');
+							that.$store.commit('EMPTY_SHOPCART');
+							that.$store.commit('EMPTY_shopList');
 							that.$router.push({name: 'User'});
 						},1000);
 					}else{
@@ -217,20 +221,24 @@
 			},
 			AddressClick () {
 				//点击选择其他收货地址按钮事件
-				let that = this;
-				that.$store.commit('SET_ADDRESSBACKNAME',{
+				this.$store.commit('SET_ADDRESSBACKNAME',{
 					name: 'OrderConfirm',
 				});
-				that.$router.push({name: 'Address'});
+				this.$router.push({name: 'Address'});
 			},
 			goBack () {
 				let that = this;
+				if(window.sessionStorage.getItem('addressInfo'))
+					window.sessionStorage.removeItem('addressInfo');
 				that.$router.push({name: that.$store.state.OrderConfirmBackName});
 			},
 		},
 		computed: {
-			shopCart () {
-				return this.$store.state.shopCart;
+			shopList () {
+				if(this.$store.state.fromCart)
+					return this.$store.state.shopCart;
+				else
+					return this.$store.state.buy;
 			},
 			sum () {
 				//所有选中的商品的总价
