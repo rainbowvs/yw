@@ -68,6 +68,7 @@
 				</ul>
 			</div>
 		</div>
+		<my-dialog ref="dialog" @sure="ok"></my-dialog>
 	</div>
 </template>
 
@@ -83,9 +84,10 @@
 			}
 		},
 		methods: {
-			logoutClick () {
+			ok () {
+				//点击确定按钮事件
 				let that = this;
-				let userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+				let userInfo = that.$store.state.userInfo;
 				let [id,phone,token] = [userInfo['id'],userInfo['phone'],userInfo['token']];
 				that.$ajax({
 					name: '退出登录',
@@ -103,8 +105,9 @@
 						that.$store.commit('SHOW_TOAST',{
 							text: res.msg
 						});
+						that.$refs.dialog.close();
 						//移除用户信息
-						window.localStorage.removeItem('userInfo');
+						that.$store.commit('DEL_USERINFO');
 						setTimeout(() => {
 							that.$router.push({name: 'Home'});
 						},1000);
@@ -119,6 +122,12 @@
 					that.$store.commit('SHOW_TOAST',{
 						text: status
 					});
+				});
+			},
+			logoutClick () {
+				//点击退出登录按钮事件
+				this.$refs.dialog.open({
+					text: '确定要退出登录',
 				});
 			},
 		},
