@@ -9,39 +9,43 @@
 			<h1 slot="mid">收货地址管理</h1>
 		</my-header>
 		<div class="container">
-			<ul>
-				<li v-for="v,i in addresses">
-					<div class="top" @click="addressClick(v,i)">
-						<div class="userInfo">
-							<span v-text="v.name"></span>
-							<em v-text="v.phone"></em>
-						</div>
-						<p v-text="v.address"></p>
-					</div>
-					<div class="bottom">
-						<div class="left" @click="acquiescentClick(v,i)">
-							<template v-if="v.acquiescent">
-								<i class="yuewang icon-radio-checked checked"></i>
-								<span class="checked">默认地址</span>
-							</template>
-							<template v-else>
-								<i class="yuewang icon-radio"></i>
-								<span>设为默认</span>
-							</template>
-						</div>
-						<div class="right">
-							<span @click="$router.push({name: 'AddressEdit',params: {address: v,show: !v.acquiescent}})">
-								<i class="yuewang icon-editor"></i>
-								<em>编辑</em>
-							</span>
-							<span @click="deleteClick(v,i)">
-								<i class="yuewang icon-recycle"></i>
-								<em>删除</em>
-							</span>
-						</div>
-					</div>
-				</li>
-			</ul>
+			<div class="scroller">
+				<scroller :on-infinite="load" ref="sc">
+					<ul>
+						<li v-for="v,i in addresses">
+							<div class="top" @click="addressClick(v,i)">
+								<div class="userInfo">
+									<span v-text="v.name"></span>
+									<em v-text="v.phone"></em>
+								</div>
+								<p v-text="v.address"></p>
+							</div>
+							<div class="bottom">
+								<div class="left" @click="acquiescentClick(v,i)">
+									<template v-if="v.acquiescent">
+										<i class="yuewang icon-radio-checked checked"></i>
+										<span class="checked">默认地址</span>
+									</template>
+									<template v-else>
+										<i class="yuewang icon-radio"></i>
+										<span>设为默认</span>
+									</template>
+								</div>
+								<div class="right">
+									<span @click="$router.push({name: 'AddressEdit',params: {address: v,show: !v.acquiescent}})">
+										<i class="yuewang icon-editor"></i>
+										<em>编辑</em>
+									</span>
+									<span @click="deleteClick(v,i)">
+										<i class="yuewang icon-recycle"></i>
+										<em>删除</em>
+									</span>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</scroller>
+			</div>
 		</div>
 		<div class="footer" @click="$router.push({name: 'AddressAdd'})">
 			<a href="javascript:;">新增收货地址</a>
@@ -61,65 +65,71 @@
 			}
 		},
 		created () {
-			let that = this;
-			that.$ajax({
-				name: '获取所有收货地址列表',
-				url: window.reqUrl + 'address.php',
-				data: {
-					handle: 'getAll',
-					uid: that.$store.state.userInfo['id'],
-					token: that.$store.state.userInfo['token'],
-					page: that.currentPage,
-				},
-				beforeSend () {
-					that.$store.commit('SHOW_LOADING');
-				}
-			}).then(res => {
-				if(res.type == 'success'){
-					res.addresses.forEach((v,i) => {
-						if(v.acquiescent == 0)
-							that.addresses.push({
-								id: v.id,
-								name: v.name,
-								phone: v.phone,
-								address: v.address,
-								acquiescent: false,
-								uid: v.uid,
-								c_date: v.c_date,
-							});
-						else
-							that.addresses.unshift({
-								id: v.id,
-								name: v.name,
-								phone: v.phone,
-								address: v.address,
-								acquiescent: true,
-								uid: v.uid,
-								c_date: v.c_date,
-							});
-							
-					});
-				}else{
-					if(res.status == 1)
-						setTimeout(() => {
-							that.$router.push({name: 'Login'});
-						},1000);
-					that.$store.commit('SHOW_TOAST',{
-						text: res.msg
-					});
-				}
-				that.$store.commit('HIDE_LOADING');
-			}).catch(status => {
-				that.$store.commit('HIDE_LOADING');
-				that.$store.commit('SHOW_TOAST',{
-					text: status
-				});
-			});
+			this.load();
 		},
 		methods: {
+			load () {
+				let that = this;
+				that.$ajax({
+					name: '获取所有收货地址列表',
+					url: window.reqUrl + 'address.php',
+					data: {
+						handle: 'getAll',
+						uid: that.$store.state.userInfo['id'],
+						token: that.$store.state.userInfo['token'],
+						page: that.currentPage,
+					},
+					beforeSend () {
+						that.$store.commit('SHOW_LOADING');
+					}
+				}).then(res => {
+					if(res.type == 'success'){
+						res.addresses.forEach((v,i) => {
+							if(v.acquiescent == 0)
+								that.addresses.push({
+									id: v.id,
+									name: v.name,
+									phone: v.phone,
+									address: v.address,
+									acquiescent: false,
+									uid: v.uid,
+									c_date: v.c_date,
+								});
+							else
+								that.addresses.unshift({
+									id: v.id,
+									name: v.name,
+									phone: v.phone,
+									address: v.address,
+									acquiescent: true,
+									uid: v.uid,
+									c_date: v.c_date,
+								});
+								
+						});
+						that.currentPage++;
+						that.$refs.sc.finishInfinite(0);//1=>停止
+					}else{
+						if(res.status == 1)
+							setTimeout(() => {
+								that.$router.push({name: 'Login'});
+							},1000);
+						that.$store.commit('SHOW_TOAST',{
+							text: res.msg
+						});
+					}
+					that.$store.commit('HIDE_LOADING');
+				}).catch(status => {
+					that.$store.commit('HIDE_LOADING');
+					that.$store.commit('SHOW_TOAST',{
+						text: status
+					});
+				});
+			},
 			addressClick (item,index) {
 				//点击选择收货地址事件
-				this.$router.push({name: 'OrderConfirm',params: {addressInfo: item}});
+				window.sessionStorage.setItem('addressInfo',JSON.stringify(item));
+				this.$router.push({name: 'OrderConfirm'});
 			},
 			ok (params) {
 				//确认删除按钮事件
