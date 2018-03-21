@@ -6,7 +6,7 @@
 	<div class="cart">
 		<my-header>
 			<span slot="left"></span>
-			<span slot="right" @click="clean">清空</span>
+			<span slot="right" @click="emptyClick">清空</span>
 			<h1 slot="mid">购物车</h1>
 		</my-header>
 		<div class="container">
@@ -70,11 +70,22 @@
 		methods: {
 			balanceClick () {
 				//点击结算按钮事件
-				let that = this;
-				that.$store.commit('SET_ORDERCONFIRMBACKNAME',{
+				let temp = 0;
+				this.shops.forEach((v,i) => {
+					if(v.isChecked)
+						temp++;
+				});
+				if(temp == 0){
+					this.$store.commit('SHOW_TOAST',{
+						text: '没有选中任何商品',
+					});
+					return false;
+				}
+				this.$store.commit('SET_ORDERCONFIRMBACKNAME',{
 					name: 'Cart',
 				});
-				that.$router.push({name: 'OrderConfirm'});
+				this.$store.commit('SET_FROMCART',true);
+				this.$router.push({name: 'OrderConfirm'});
 			},
 			ok (n) {
 				//点击确认删除按钮事件
@@ -170,10 +181,9 @@
 				clearInterval(item.timer);
 				item.timer = null;
 			},
-			clean () {
+			emptyClick () {
 				//点击清空购物车按钮事件
-				this.shops.splice(0,this.shops.length);
-				window.localStorage.setItem('shopCart',JSON.stringify([]));
+				this.$store.commit('EMPTY_SHOPCART');
 			},
 		},
 		computed: {
