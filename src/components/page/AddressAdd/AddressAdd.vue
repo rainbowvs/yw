@@ -12,15 +12,15 @@
 			<ul>
 				<li>
 					<label for="cnee">收货人：</label>
-					<input type="text" id="cnee" v-model="name" />
+					<input type="text" id="cnee" v-model="name" placeholder="请填写20位字符以内的收货人姓名" maxlength="20" />
 				</li>
 				<li>
 					<label for="phone">手机：</label>
-					<input type="text" id="phone" v-model="phone" />
+					<input type="text" id="phone" v-model="phone" placeholder="请填写11位收货人手机" maxlength="11" />
 				</li>
 				<li>
 					<label for="address">详细地址：</label>
-					<input type="text" id="address" v-model="address" />
+					<input type="text" id="address" v-model="address" placeholder="请填写60位字符以内的详细地址" maxlength="60" />
 				</li>
 				<li @click="acquiescent=!acquiescent" :class="{acquiescent: acquiescent}">
 					<template v-if="acquiescent">
@@ -44,18 +44,74 @@
 	export default {
 		data () {
 			return {
-				name: '阿里巴巴',
-				phone: '15099976289',
-				address: '中国杭州市滨江区网商路699号',
+				name: '',
+				phone: '',
+				address: '',
 				acquiescent: true,
 			}
 		},
-		created () {
-			
-		},
 		methods: {
+			checkPhone (phone) {
+				if(phone == ''){
+					this.$store.commit('SHOW_TOAST',{
+						text: '请填写手机号码',
+					});
+					return false;
+				}else if(/and|or|\/|\'|\"|\;|\:|\?|\\|\s/g.test(phone)){
+					this.$store.commit('SHOW_TOAST',{
+						text: '手机不得包含敏感字符',
+					});
+					return false;
+				}else if(!(/^1[3|4|5|8]\d{9}$/.test(phone))){
+					this.$store.commit('SHOW_TOAST',{
+						text: '请输入正确的手机号码',
+					});
+					return false;
+				}
+				return true;
+			},
+			checkName (name) {
+				if(name == ''){
+					this.$store.commit('SHOW_TOAST',{
+						text: '请填写姓名',
+					});
+					return false;
+				}else if(/and|or|\/|\'|\"|\;|\:|\?|\\|\s/g.test(name)){
+					this.$store.commit('SHOW_TOAST',{
+						text: '姓名不得包含敏感字符',
+					});
+					return false;
+				}else if(name.length >= 20){
+					this.$store.commit('SHOW_TOAST',{
+						text: '姓名长度不得超过20个字符',
+					});
+					return false;
+				}
+				return true;
+			},
+			checkAddress (address) {
+				if(address == ''){
+					this.$store.commit('SHOW_TOAST',{
+						text: '请填写详细地址',
+					});
+					return false;
+				}else if(/and|or|\/|\'|\"|\;|\:|\?|\\|\s/g.test(address)){
+					this.$store.commit('SHOW_TOAST',{
+						text: '详细地址不得包含敏感字符',
+					});
+					return false;
+				}else if(address.length >= 60){
+					this.$store.commit('SHOW_TOAST',{
+						text: '详细地址长度不得超过60个字符',
+					});
+					return false;
+				}
+				return true;
+			},
 			sureClick () {
 				let that = this;
+				if(!(that.checkName(that.name) && that.checkPhone(that.phone) && that.checkAddress(that.address)))
+					return false;
 				that.$ajax({
 					name: '新增收货地址',
 					url: window.reqUrl + 'address.php',

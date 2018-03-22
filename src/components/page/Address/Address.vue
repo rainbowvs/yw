@@ -128,6 +128,8 @@
 			},
 			addressClick (item,index) {
 				//点击选择收货地址事件
+				if(this.$store.state.AddressBackName == 'User')
+					return false;
 				window.sessionStorage.setItem('addressInfo',JSON.stringify(item));
 				this.$router.push({name: 'OrderConfirm'});
 			},
