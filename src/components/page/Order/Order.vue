@@ -17,11 +17,10 @@
 								<span v-text="`订单编号：${v.oid}`"></span>
 								<em>
 									<template v-if="v.state==0">待付款</template>
-									<template v-else-if="v.state==1">待付款</template>
-									<template v-else-if="v.state==2">待发货</template>
-									<template v-else-if="v.state==3">待收货</template>
-									<template v-else-if="v.state==4">待评价</template>
-									<template v-else-if="v.state==5">交易完成</template>
+									<template v-else-if="v.state==1">待发货</template>
+									<template v-else-if="v.state==2">待收货</template>
+									<template v-else-if="v.state==3">待评价</template>
+									<template v-else-if="v.state==4">交易完成</template>
 								</em>
 							</div>
 							<div class="mid">
@@ -39,7 +38,9 @@
 							<div class="bottom">
 								<div class="left">
 									<a href="javascript:;" @click="detailClick(v)">订单详情</a>
-									<a href="javascript:;">付款</a>
+									<template v-if="v.state==0">
+										<a href="javascript:;" @click="$router.push({name: 'Pay',params: {oid: v.oid}})">付款</a>
+									</template>
 								</div>
 								<div class="right">
 									<a href="javascript:;" @click="deleteClick(v,i)">删除订单</a>
