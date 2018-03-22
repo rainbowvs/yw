@@ -41,6 +41,14 @@ const router = new Router({
 	  	component: () => import('@/components/page/ShopDetail/ShopDetail.vue'),
 	  },
 	  {
+	  	path: '/app/user/userdetail',
+	  	name: 'UserDetail',
+	  	component: () => import('@/components/page/UserDetail/UserDetail.vue'),
+	  	meta: {
+	    	requireProp: true,//需要对跳转进行验证
+	    },
+	  },
+	  {
 	  	path: '/app/order',
 	  	name: 'Order',
 	  	component: () => import('@/components/page/Order/Order.vue'),
@@ -60,6 +68,22 @@ const router = new Router({
 	  	path: '/app/order/orderdetail',
 	  	name: 'OrderDetail',
 	  	component: () => import('@/components/page/OrderDetail/OrderDetail.vue'),
+	  	meta: {
+	    	requireProp: true,//需要对跳转进行验证
+	    },
+	  },
+	  {
+	  	path: '/app/order/orderconfirm/pay',
+	  	name: 'Pay',
+	  	component: () => import('@/components/page/Pay/Pay.vue'),
+	  	meta: {
+	    	requireProp: true,//需要对跳转进行验证
+	    },
+	  },
+	  {
+	  	path: '/app/order/orderconfirm/pay/paysuccess',
+	  	name: 'PaySuccess',
+	  	component: () => import('@/components/page/PaySuccess/PaySuccess.vue'),
 	  	meta: {
 	    	requireProp: true,//需要对跳转进行验证
 	    },
