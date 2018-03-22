@@ -113,6 +113,10 @@ const mutations = {
 		//存放立即购买的商品信息
 		state.buy = [obj];
 	},
+	EMPTY_BUY (state,obj) {
+		//清空立即购买的商品信息
+		state.buy = [];
+	},
 	SET_FROMCART (state,bool) {
 		//设置是否从购物车拿商品
 		state.fromCart = bool;
