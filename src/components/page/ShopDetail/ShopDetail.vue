@@ -62,26 +62,6 @@
 					</li>
 				</ul>
 			</div>
-			<div class="evaluate">
-				<h6>——买家评论——</h6>
-				<ul>
-					<li>
-						<i>rainbowvs</i>
-						<p>很好,很满意</p>
-						<span>2017-06-26</span>
-					</li>
-					<li>
-						<i>subpub</i>
-						<p>款式很漂亮</p>
-						<span>2017-03-01</span>
-					</li>
-					<li>
-						<i>pppppd</i>
-						<p>老婆非常喜欢</p>
-						<span>2016-06-11</span>
-					</li>
-				</ul>
-			</div>
 		</div>
 		<div class="footer">
 			<a href="javascript:;" class="addCart" @click="checkShop('addCartClick')">加入购物车</a>
