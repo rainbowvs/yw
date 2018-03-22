@@ -4,40 +4,57 @@
     width: 100%;
     height: 100%;
     @include flex(column,space-between);
-    &>.header{
-        background-color: $themeColor;
-        height: 140px;
-        width: 100%;
-        @include flex(column);
-        position: relative;
-        &>img{
-            border: 3px solid #fff;
-            border-radius: 100%;
-            width: 20%;
-            max-width: 100px;
-        }
-        &>h6{
-            color: #fff;
-            margin-top: 5px;
-            font-size: 16px;
-            @include space(3px);
-        }
-        &>i{
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            width: 50px;
-            height: 40px;
-            @include flex(row);
-            color: #666;
-            font-size: 26px;
-        }
-    }
     &>.container{
         flex: 1;
         width: 100%;
         overflow-y: auto;
         background-color: $bgColor;
+        &>.base{
+            margin-top: 15px;
+            background-color: #fff;
+            &>h2{
+                border-bottom: 1px solid $borderColor;
+                height: 40px;
+                @include flex(row,space-between);
+                padding: 0 15px;
+                &>span{
+                    font-size: 16px;
+                }
+                &>i{
+                    width: 50px;
+                    @include flex(row);
+                    height: 100%;
+                    font-style: normal;
+                    font-size: 16px;
+                }
+            }
+            &>ul{
+                padding: 0 15px;
+                &>li{
+                    border-bottom: 1px solid $borderColor;
+                    box-sizing: border-box;
+                    padding: 10px 5px;
+                    @include flex(row,space-between);
+                    &:last-child{
+                        border: none;
+                    }
+                    &>img{
+                        width: 30%;
+                    }
+                    &>span{
+                        white-space: nowrap;
+                        font-size: 14px;
+                    }
+                    &>em{
+                        text-align: right;
+                        margin-left: 15px;
+                        font-size: 14px;
+                        font-style: normal;
+                        color: $themeColor;
+                    }
+                }
+            }
+        }
         &>.info{
             background-color: #fff;
             &>ul{

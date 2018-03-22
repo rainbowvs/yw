@@ -1,65 +1,51 @@
+<style lang="scss" scoped>
+	@import 'User.scss';
+</style>
+
 <template>
 	<div class="user">
-		<div class="header">
-			<img src="http://qzapp.qlogo.cn/qzapp/101303972/CD5220AFA905C8D4BAE834719D3B29F9/100" />
-			<h6>rainbowvs</h6>
-			<i class="yuewang icon-share"></i>
-		</div>
+		<my-header>
+			<i slot="left"></i>
+			<h1 slot="mid">用户</h1>
+		</my-header>
 		<div class="container">
-			<div class="info">
+			<div class="base">
+				<h2>
+					<span>账号资料</span>
+					<i @click="$router.push({name: 'UserDetail'})">修改</i>
+				</h2>
 				<ul>
 					<li>
-						<i>56</i>
-						<span>收藏</span>
+						<span>手机: </span>
+						<em v-text="$store.state.userInfo.phone"></em>
 					</li>
 					<li>
-						<i>216</i>
-						<span>我的足迹</span>
+						<span>昵称: </span>
+						<em v-text="$store.state.userInfo.name"></em>
 					</li>
 					<li>
-						<i>520</i>
-						<span>购买记录</span>
-					</li>
-				</ul>
-			</div>
-			<div class="order">
-				<h2 @click="$router.push({name: 'Order'})">我的订单</h2>
-				<ul>
-					<li>
-						<img src="../../../../static/img/send.jpg"/>
-						<span>待发货</span>
+						<span>密码: </span>
+						<em v-text="$store.state.userInfo.o_pwd"></em>
 					</li>
 					<li>
-						<img src="../../../../static/img/pay.jpg"/>
-						<span>待付款</span>
+						<span>支付密码: </span>
+						<em v-text="$store.state.userInfo.o_pay_pwd"></em>
 					</li>
 					<li>
-						<img src="../../../../static/img/receive.jpg"/>
-						<span>待收货</span>
-					</li>
-					<li>
-						<img src="../../../../static/img/evaluate.jpg"/>
-						<span>评价</span>
-					</li>
-					<li>
-						<img src="../../../../static/img/refund.jpg"/>
-						<span>退款·售后</span>
+						<span>注册时间: </span>
+						<em v-text="$store.state.userInfo.r_date"></em>
 					</li>
 				</ul>
 			</div>
 			<div class="func">
 				<ul>
-					<li>
-						<i class="yuewang icon-setup"></i>
-						<span>账户设置</span>
+					<li @click="addressClick">
+						<i class="yuewang icon-brush"></i>
+						<span>我的收货地址</span>
 					</li>
-					<li>
-						<i class="yuewang icon-service"></i>
-						<span>客户服务</span>
-					</li>
-					<li>
-						<i class="yuewang icon-about"></i>
-						<span>关于我们</span>
+					<li @click="$router.push({name: 'Order'})">
+						<i class="yuewang icon-editor"></i>
+						<span>我的订单</span>
 					</li>
 					<li @click="logoutClick">
 						<i class="yuewang icon-logout"></i>
@@ -72,11 +58,8 @@
 	</div>
 </template>
 
-<style lang="scss" scoped>
-	@import 'User.scss';
-</style>
-
 <script>
+	import Header from '@/components/module/Header/Header';
 	export default {
 		data () {
 			return {
@@ -84,6 +67,12 @@
 			}
 		},
 		methods: {
+			addressClick () {
+				this.$store.commit('SET_ADDRESSBACKNAME',{
+					name: 'User',
+				});
+				this.$router.push({name: 'Address'});
+			},
 			ok () {
 				//点击确定按钮事件
 				let that = this;
@@ -107,9 +96,9 @@
 						});
 						that.$refs.dialog.close();
 						//移除用户信息
-						that.$store.commit('DEL_USERINFO');
 						setTimeout(() => {
 							that.$router.push({name: 'Home'});
+							that.$store.commit('DEL_USERINFO');
 						},1000);
 					}else{
 						that.$store.commit('SHOW_TOAST',{
@@ -130,6 +119,9 @@
 					text: '确定要退出登录',
 				});
 			},
+		},
+		components: {
+			'my-header': Header,
 		},
 	}
 </script>
