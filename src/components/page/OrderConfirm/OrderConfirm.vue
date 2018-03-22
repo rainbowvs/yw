@@ -163,6 +163,12 @@
 		methods: {
 			submitClick () {
 				let that = this;
+				if(!that.addressInfo){
+					that.$store.commit('SHOW_TOAST',{
+						text: '请选择收货地址',
+					});
+					return false;
+				}
 				
 				let shops = [];
 				that.shopList.forEach((v,i) => {
@@ -200,7 +206,9 @@
 								window.sessionStorage.removeItem('addressInfo');
 							if(this.$store.state.fromCart)
 								that.$store.commit('EMPTY_SHOPCART');
-							that.$router.push({name: 'User'});
+							else
+								that.$store.commit('EMPTY_BUY');
+							that.$router.push({name: 'Pay',params: {oid: res.oid}});
 						},1000);
 					}else{
 						if(res.status == 1)
