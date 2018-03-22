@@ -12,15 +12,19 @@
 			<form>
 				<div id="phone" :class="{focus: phoneFocus}">
 					<i class="yuewang icon-phone" :class="{focus: phoneFocus}"></i>
-					<input type="text" v-model="phone" placeholder="请输入手机号码" @focus="phoneFocus=true" @blur="phoneFocus=false"/>
+					<input type="text" v-model="phone" placeholder="请输入11位手机号码" maxlength="11" @focus="phoneFocus=true" @blur="phoneFocus=false"/>
 				</div>
 				<div id="name" :class="{focus: nameFocus}">
 					<i class="yuewang icon-my" :class="{focus: nameFocus}"></i>
-					<input type="text" v-model="name" placeholder="请输入昵称" @focus="nameFocus=true" @blur="nameFocus=false"/>
+					<input type="text" v-model="name" placeholder="请输入20位以内的昵称" maxlength="20" @focus="nameFocus=true" @blur="nameFocus=false"/>
 				</div>
 				<div id="pwd" :class="{focus: pwdFocus}">
 					<i class="yuewang icon-lock" :class="{focus: pwdFocus}"></i>
-					<input type="password" v-model="pwd" placeholder="请输入密码" @keyup="enterUp($event)" @focus="pwdFocus=true" @blur="pwdFocus=false"/>
+					<input type="password" v-model="pwd" placeholder="请输入6-12位密码" maxlength="12" @focus="pwdFocus=true" @blur="pwdFocus=false"/>
+				</div>
+				<div id="payPwd" :class="{focus: payPwdFocus}">
+					<i class="yuewang icon-lock" :class="{focus: payPwdFocus}"></i>
+					<input type="password" v-model="payPwd" placeholder="请输入6位数字支付密码" maxlength="6" @keyup="enterUp($event)" @focus="payPwdFocus=true" @blur="payPwdFocus=false"/>
 				</div>
 				<a href="javascript:;" @click="registerClick">注册</a>
 			</form>
@@ -39,9 +43,11 @@
 				phone: '',
 				name: '',
 				pwd: '',
+				payPwd: '',
 				phoneFocus: false,
 				nameFocus: false,
 				pwdFocus: false,
+				payPwdFocus: false,
 			}
 		},
 		created () {
@@ -102,9 +108,9 @@
 						text: '密码不得包含敏感字符',
 					});
 					return false;
-				}else if(pwd.length < 6 || pwd.length > 16){
+				}else if(pwd.length < 6 || pwd.length > 12){
 					this.$store.commit('SHOW_TOAST',{
-						text: '密码长度范围在6-16个字符',
+						text: '密码长度范围在6-12个字符',
 					});
 					return false;
 				}else if(!(/(?=.*\d)(?=.*[a-z])/g.test(pwd))){
@@ -115,10 +121,29 @@
 				}
 				return true;
 			},
+			checkPayPwd (pwd) {
+				if(pwd == ''){
+					this.$store.commit('SHOW_TOAST',{
+						text: '请填写支付密码',
+					});
+					return false;
+				}else if(/and|or|\/|\'|\"|\;|\:|\?|\\|\s/g.test(pwd)){
+					this.$store.commit('SHOW_TOAST',{
+						text: '支付密码不得包含敏感字符',
+					});
+					return false;
+				}else if(!(/\d{6}/g.test(pwd))){
+					this.$store.commit('SHOW_TOAST',{
+						text: '支付密码只能是6位数字',
+					});
+					return false;
+				}
+				return true;
+			},
 			registerClick () {
 				//点击注册按钮事件
 				let that = this;
-				if(!(that.checkPhone(that.phone) && that.checkName(that.name) && that.checkPwd(that.pwd)))
+				if(!(that.checkPhone(that.phone) && that.checkName(that.name) && that.checkPwd(that.pwd) && that.checkPayPwd(that.payPwd)))
 					return false;
 				that.$ajax({
 					name: '注册',
@@ -127,6 +152,7 @@
 						phone: that.phone,
 						pwd: that.pwd,
 						name: that.name,
+						payPwd: that.payPwd,
 					},
 					beforeSend () {
 						that.$store.commit('SHOW_LOADING');
