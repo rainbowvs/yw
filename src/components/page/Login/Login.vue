@@ -11,18 +11,17 @@
 		<div class="container">
 			<form>
 				<div id="phone" :class="{focus: phoneFocus}">
-					<i class="yuewang icon-my" :class="{focus: phoneFocus}"></i>
-					<input type="text" v-model="phone" placeholder="请输入账号" @focus="phoneFocus=true" @blur="phoneFocus=false"/>
+					<i class="yuewang icon-phone" :class="{focus: phoneFocus}"></i>
+					<input type="text" v-model="phone" placeholder="请输入手机号码" maxlength="11" @focus="phoneFocus=true" @blur="phoneFocus=false"/>
 				</div>
 				<div id="pwd" :class="{focus: pwdFocus}">
 					<i class="yuewang icon-lock" :class="{focus: pwdFocus}"></i>
-					<input type="password" v-model="pwd" placeholder="请输入密码" @keyup="enterUp($event)" @focus="pwdFocus=true" @blur="pwdFocus=false"/>
+					<input type="password" v-model="pwd" placeholder="请输入密码" maxlength="12" @keyup="enterUp($event)" @focus="pwdFocus=true" @blur="pwdFocus=false"/>
 				</div>
 				<a href="javascript:;" @click="loginClick">登录</a>
 			</form>
 			<div class="other">
 				<a href="javascript:;" @click="$router.push({name:'Register'})">注册账号</a>
-				<a href="javascript:;">忘记密码</a>
 			</div>
 		</div>
 	</div>
@@ -115,9 +114,9 @@
 						text: '密码不得包含敏感字符',
 					});
 					return false;
-				}else if(pwd.length < 6 || pwd.length > 16){
+				}else if(pwd.length < 6 || pwd.length > 12){
 					this.$store.commit('SHOW_TOAST',{
-						text: '密码长度范围在6-16个字符',
+						text: '密码长度范围在6-12个字符',
 					});
 					return false;
 				}
