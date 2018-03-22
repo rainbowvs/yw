@@ -7,7 +7,7 @@
 		<my-header>
 			<i slot="left" class="yuewang icon-sort" @click="sidebar_show=true"></i>
 			<form slot="mid">
-				<input type="text" placeholder="戒指" v-model="searchContent" autofocus />
+				<input type="text" placeholder="输入商品名字" v-model="searchContent" autofocus />
 				<i class="yuewang icon-search"></i>
 			</form>
 			<span slot="right" @click="searchContent=''">清空</span>
@@ -16,7 +16,7 @@
 			<div class="sidebar">
 				<div class="mask" :class="{'active': sidebar_show}" @click="sidebar_show=false"></div>
 				<div class="container" :class="{'active': sidebar_show}">
-					<h2>材质</h2>
+					<h2>按材质分类</h2>
 					<ul>
 						<li v-for="type,index in types" v-text="type.name" :class="{'active': type.isChecked}" @click="typeClick(index)"></li>
 					</ul>
@@ -67,6 +67,9 @@
 		},
 		created () {
 			this.load();
+			this.$store.commit('SHOW_TOAST',{
+				text: '点击左上角打开分类栏目',
+			});
 		},
 		methods: {
 			load () {
