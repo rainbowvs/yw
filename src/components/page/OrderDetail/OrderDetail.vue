@@ -59,11 +59,10 @@
 						<span>订单状态: </span>
 						<em>
 							<template v-if="orderInfo.state==0">待付款</template>
-							<template v-else-if="orderInfo.state==1">待付款</template>
-							<template v-else-if="orderInfo.state==2">待发货</template>
-							<template v-else-if="orderInfo.state==3">待收货</template>
-							<template v-else-if="orderInfo.state==4">待评价</template>
-							<template v-else-if="orderInfo.state==5">交易完成</template>
+							<template v-else-if="orderInfo.state==1">待发货</template>
+							<template v-else-if="orderInfo.state==2">待收货</template>
+							<template v-else-if="orderInfo.state==3">待评价</template>
+							<template v-else-if="orderInfo.state==4">交易完成</template>
 						</em>
 					</li>
 					<li>
