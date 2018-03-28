@@ -41,9 +41,25 @@ const router = new Router({
 	  	component: () => import('@/components/page/ShopDetail/ShopDetail.vue'),
 	  },
 	  {
-	  	path: '/app/user/userdetail',
-	  	name: 'UserDetail',
-	  	component: () => import('@/components/page/UserDetail/UserDetail.vue'),
+	  	path: '/app/user/name',
+	  	name: 'Name',
+	  	component: () => import('@/components/page/Pwd/Pwd.vue'),
+	  	meta: {
+	    	requireProp: true,//需要对跳转进行验证
+	    },
+	  },
+	  {
+	  	path: '/app/user/pwd',
+	  	name: 'Pwd',
+	  	component: () => import('@/components/page/Pwd/Pwd.vue'),
+	  	meta: {
+	    	requireProp: true,//需要对跳转进行验证
+	    },
+	  },
+	  {
+	  	path: '/app/user/paypwd',
+	  	name: 'PayPwd',
+	  	component: () => import('@/components/page/PayPwd/PayPwd.vue'),
 	  	meta: {
 	    	requireProp: true,//需要对跳转进行验证
 	    },
