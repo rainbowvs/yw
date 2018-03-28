@@ -67,9 +67,13 @@
 						<span>重量: </span>
 						<em v-text="`约${v.mass}g`"></em>
 					</li>
-					<li>
+					<li v-if="v.size">
 						<span>圈口: </span>
 						<em v-text="v.size"></em>
+					</li>
+					<li v-if="v.length">
+						<span>链长: </span>
+						<em v-text="`${v.length}cm`"></em>
 					</li>
 					<li>
 						<span>数量: </span>
@@ -176,6 +180,7 @@
 						id: v.id,
 						amount: v.amount,
 						size: v.size,
+						length: v.length,
 					});
 				});
 				shops = JSON.stringify(shops);
@@ -236,6 +241,7 @@
 			},
 			goBack () {
 				let that = this;
+				this.$store.commit('SET_FROMCART',true);
 				if(window.sessionStorage.getItem('addressInfo'))
 					window.sessionStorage.removeItem('addressInfo');
 				that.$router.push({name: that.$store.state.OrderConfirmBackName});

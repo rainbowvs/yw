@@ -32,8 +32,20 @@
 						<em v-text="v.name"></em>
 					</li>
 					<li>
-						<span>规格: </span>
+						<span>材质: </span>
 						<em v-text="v.material"></em>
+					</li>
+					<li v-if="v.size">
+						<span>圈口: </span>
+						<em v-text="v.size"></em>
+					</li>
+					<li v-if="v.length">
+						<span>链长: </span>
+						<em v-text="`${v.length}cm`"></em>
+					</li>
+					<li>
+						<span>重量: </span>
+						<em v-text="`约${v.mass}g`"></em>
 					</li>
 					<li>
 						<span>数量: </span>

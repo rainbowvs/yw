@@ -32,7 +32,12 @@
 							<img :src="shop.poster" />
 							<div class="text">
 								<p v-text="shop.name"></p>
-								<em v-text="`圈口：${shop.size}`"></em>
+								<template v-if="shop.size">
+									<em v-text="`圈口：${shop.size}`"></em>
+								</template>
+								<template v-else-if="shop.length">
+									<em v-text="`链长：${shop.length}cm`"></em>
+								</template>
 								<span v-text="`￥${shop.price}`"></span>
 								<form>
 									<a ref="subtract" href="javascript:;" class="subtract" @touchstart="subtractStartFunc($event,shop,index,500,100)" @touchend="subtractEndFunc(shop)">-</a>
