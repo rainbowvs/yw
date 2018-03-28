@@ -1,3 +1,7 @@
+<style lang="scss" scoped>
+	@import 'Header.scss';
+</style>
+
 <template>
 	<div class="header">
 		<div class="container">
@@ -13,10 +17,6 @@
 		</div>
 	</div>
 </template>
-
-<style lang="scss" scoped>
-	@import 'Header.scss';
-</style>
 
 <script>
 	export default{
