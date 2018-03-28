@@ -20,8 +20,8 @@ Vue.component('my-dialog',Dialog);
 
 Vue.config.productionTip = false
 
-//window.reqUrl = 'http://192.168.1.101:8082/interface/';
-window.reqUrl = './interface/';
+window.reqUrl = 'http://192.168.1.101:8082/interface/';
+//window.reqUrl = '../interface/';
 
 //[全局]进入前触发,必须设置在实例之前
 router.beforeEach((to, from, next) => {
