@@ -5,7 +5,6 @@
 <template>
 	<div class="categories">
 		<my-header>
-			<i slot="left" class="yuewang icon-sort" @click="sidebar_show=true"></i>
 			<form slot="mid">
 				<input type="text" placeholder="输入商品名字" v-model="searchContent" autofocus />
 				<i class="yuewang icon-search"></i>
@@ -14,9 +13,7 @@
 		</my-header>
 		<div class="container" ref="scrollContainer">
 			<div class="sidebar">
-				<div class="mask" :class="{'active': sidebar_show}" @click="sidebar_show=false"></div>
 				<div class="container" :class="{'active': sidebar_show}">
-					<h2>按材质分类</h2>
 					<ul>
 						<li v-for="type,index in types" v-text="type.name" :class="{'active': type.isChecked}" @click="typeClick(index)"></li>
 					</ul>
@@ -27,12 +24,7 @@
 					<ul class="list">
 						<li v-for="shop,index in searchShops" @click="shopClick(shop)">
 							<a href="javascript:;">
-								<template v-if="shop.isLoaded">
-									<img :src="shop.poster"/>
-								</template>
-								<template v-else>
-									<img src="../../../../static/img/1.gif"/>
-								</template>
+								<img :src="shop.poster"/>
 								<h6 v-text="shop.name"></h6>
 								<span>￥{{shop.price}}</span>
 							</a>
@@ -67,9 +59,6 @@
 		},
 		created () {
 			this.load();
-			this.$store.commit('SHOW_TOAST',{
-				text: '点击左上角打开分类栏目',
-			});
 		},
 		methods: {
 			load () {
@@ -102,16 +91,11 @@
 								price: v.price,
 								processingCost: v.processing_cost,
 								purchased: v.purchased,
-								size: v.size.split(','),
+								size: v.size=='' ? '' : v.size.split(','),
+								length: v.length=='' ? '' : v.length.split(','),
 								style: v.style,
 								type: v.type,
-								isLoaded: false,
 							});
-							let img = new Image();
-							img.src = v.poster;
-							img.onload = () => {
-								that.shops[i].isLoaded = true;
-							}
 						});
 						that.currentPage++;
 						that.$refs.sc.finishInfinite(0);//1=>停止

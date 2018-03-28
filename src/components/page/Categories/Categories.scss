@@ -10,47 +10,19 @@
         flex: 1;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        @include flex(column,space-between);
+        @include flex(row);
         background-color: $bgColor;
         &>.sidebar{
-            &>.mask{
-                visibility: hidden;
-                position: fixed;
-                z-index: 100;
-                top: 0;
-                bottom: 0;
-                right: 0;
-                left: 0;
-                transition: all .4s;
-                background-color: $maskColor;
-                opacity: 0;
-                &.active{
-                    visibility: visible;
-                    opacity: 1;
-                }
-            }
+            width: 20%;
+            height: 100%;
             &>.container{
-                visibility: hidden;
-                position: fixed;
-                z-index: 1000;
-                top: 0;
-                bottom: 0;
-                right: 40%;
-                left: 0;
+                height: 100%;
                 background-color: #fff;
-                transform: translate3d(-100%,0,0);
                 transition: all .4s;
                 box-sizing: border-box;
-                border-right: 1px solid $borderColor;
                 &.active{
                     visibility: visible;
                     transform: translate3d(0,0,0);
-                }
-                &>h2{
-                    @include space(5px);
-                    font-size: 18px;
-                    padding: 15px 0 10px 15px;
-                    border-bottom: 1px solid $borderColor;
                 }
                 &>ul{
                     width: 100%;
@@ -59,7 +31,7 @@
                         text-align: center;
                         width: 100%;
                         padding: 10px 0;
-                        @include space(10px);
+                        @include space(5px);
                         &.active{
                             color: $themeColor;
                         }
@@ -68,8 +40,8 @@
             }
         }
         &>.scroller{
-            width: 100%;
-            flex: 1;
+            width: 80%;
+            height: 100%;
             position: relative;
             &>div>div{
                 &>.list{
@@ -88,6 +60,7 @@
                             background-color: #fff;
                             &>img{
                                 width: 100%;
+                                min-height: 113px;
                                 vertical-align: middle;
                                 background: url('../../../../static/img/imgLoading.png') no-repeat center center;
                                 background-size: 40%;
@@ -109,7 +82,6 @@
                         }
                     }
                 }
-                
             }
         }
     }
