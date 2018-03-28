@@ -9,16 +9,22 @@
 			<h1 slot="mid">商品详情</h1>
 		</my-header>
 		<div class="container">
-			<img :src="shop.preview[0]" class="preview"/>
+			<img :src="shop.poster" class="preview"/>
 			<div class="spec">
 				<ul>
 					<li><h6 v-text="shop.name"></h6></li>
 					<li>价格：<span class="price">￥{{shop.price}}</span></li>
 					<li>库存： {{shop.inventory}} 件</li>
-					<li>
+					<li v-if="shop.size">
 						<div class="size">圈口：</div>
 						<dl>
 							<dd v-for="v,i in shop.size" :class="{active: focus==i}" @click="sizeClick(i)" v-text="v"></dd>
+						</dl>
+					</li>
+					<li v-if="shop.length">
+						<div class="length">链长：</div>
+						<dl>
+							<dd v-for="v,i in shop.length" :class="{active: focus==i}" @click="lengthClick(i)" v-text="v"></dd>
 						</dl>
 					</li>
 					<li>
@@ -26,7 +32,7 @@
 						<form>
 							<a ref="subtract" href="javascript:;" class="subtract">-</a>
 							<input ref="amount" type="text" name="amount" id="amount" v-model.number="amount" maxlength="3" @blur="format" @touchstart="amountInput($event)" />
-							<a ref="add" href="javascript:;" class="add">+</a>
+							<a ref="add" href="javascript:;" class="add" @touchstart="lackShop(shop.inventory)">+</a>
 						</form>
 					</li>
 				</ul>
@@ -41,7 +47,13 @@
 						<i>材质：</i><span v-text="shop.material"></span>
 					</li>
 					<li>
-						<i>款式：</i><span v-text="shop.style"></span>
+						<i>款式：</i>
+						<span>
+							<template v-if="shop.style==0">戒指</template>
+							<template v-else-if="shop.style==1">项链</template>
+							<template v-else-if="shop.style==2">吊坠</template>
+							<template v-else-if="shop.style==3">耳环</template>
+						</span>
 					</li>
 					<li>
 						<i>重量：</i><span>约{{shop.mass}}g</span>
@@ -58,7 +70,7 @@
 				<h6>——商品图片——</h6>
 				<ul>
 					<li v-for="v,i in shop.preview">
-						<img :src="v" v-if="i>0" />
+						<img :src="v" />
 					</li>
 				</ul>
 			</div>
@@ -90,6 +102,14 @@
 			this.subtractFunc(500,100);
 		},
 		methods: {
+			lackShop (count) {
+				if(count == 0){
+					this.$store.commit('SHOW_TOAST',{
+						text: '商品库存不足',
+					});
+					return false;
+				}
+			},
 			checkShop (type) {
 				//检查商品库存数量
 				let that = this;
@@ -142,7 +162,8 @@
 				this.$store.commit('SET_BUY',{
 					id: this.shop.id,
 					price: this.shop.price,
-					size: this.shop.size[this.focus],
+					size: this.shop.size==undefined ? '' : this.shop.size[this.focus],
+					length: this.shop.length==undefined ? '' : this.shop.length[this.focus],
 					amount: this.amount,
 					name: this.shop.name,
 					mass: this.shop.mass,
@@ -161,12 +182,17 @@
 				//点击选择圈口大小按钮事件
 				this.focus = index;
 			},
+			lengthClick (index) {
+				//点击选择圈口大小按钮事件
+				this.focus = index;
+			},
 			addCartClick () {
 				//点击加入购物车按钮事件
 				this.$store.commit('ADD_SHOPCART',{
 					id: this.shop.id,
 					price: this.shop.price,
-					size: this.shop.size[this.focus],
+					size: this.shop.size==undefined ? '' : this.shop.size[this.focus],
+					length: this.shop.length==undefined ? '' : this.shop.length[this.focus],
 					amount: this.amount,
 					name: this.shop.name,
 					mass: this.shop.mass,
@@ -196,6 +222,7 @@
 					this.amount = 1;
 			},
 			addFunc (max,delay,interval) {
+				this.lackShop(max);
 				let timer = null;
 				let previous = null;
 				let add = this.$refs.add;
