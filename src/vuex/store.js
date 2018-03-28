@@ -20,7 +20,7 @@ const state = {
 	OrderConfirmBackName: '',//订单确认页面返回页面名字
 	shopCart: window.localStorage['shopCart'] ? JSON.parse(window.localStorage['shopCart']) : [],//购物车
 	buy: [],//立即购买
-	fromCart: false,//从购物车拿商品
+	fromCart: true,//从购物车拿商品
 };
 
 const mutations = {
@@ -70,10 +70,19 @@ const mutations = {
 		if(state.shopCart.length == 0)
 			state.shopCart.push(obj);
 		else{
+
 			let flag = false;
 			for(let i=0,len=state.shopCart.length;i<len;i++){
 				if(state.shopCart[i]['id'] == obj['id']){
-					if(state.shopCart[i]['size'] == obj['size']){
+					if(state.shopCart[i]['size']!='' && obj['size']!='' && state.shopCart[i]['size'] == obj['size']){
+						flag = true;
+						state.shopCart[i]['amount'] += obj['amount'];
+						break;
+					}else if(state.shopCart[i]['length']!='' && obj['length']!='' && state.shopCart[i]['length'] == obj['length']){
+						flag = true;
+						state.shopCart[i]['amount'] += obj['amount'];
+						break;
+					}else if(state.shopCart[i]['size']=='' && state.shopCart[i]['length']=='' && obj['size']=='' && obj['length']==''){
 						flag = true;
 						state.shopCart[i]['amount'] += obj['amount'];
 						break;
@@ -82,6 +91,8 @@ const mutations = {
 				if((!flag) && (i==len-1))
 					state.shopCart.push(obj);
 			}
+			
+			
 		}
 
 		state.shopCart.sort((a,b) => {
