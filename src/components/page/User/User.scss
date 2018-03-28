@@ -13,6 +13,7 @@
             margin-top: 15px;
             background-color: #fff;
             &>h2{
+                border-left: 5px solid $themeColor;
                 border-bottom: 1px solid $borderColor;
                 height: 40px;
                 @include flex(row,space-between);
@@ -35,6 +36,7 @@
                     box-sizing: border-box;
                     padding: 10px 5px;
                     @include flex(row,space-between);
+                    position: relative; 
                     &:last-child{
                         border: none;
                     }
@@ -46,11 +48,17 @@
                         font-size: 14px;
                     }
                     &>em{
+                        margin-right: 15px;
                         text-align: right;
-                        margin-left: 15px;
                         font-size: 14px;
                         font-style: normal;
                         color: $themeColor;
+                    }
+                    &>i{
+                        top: 50%;
+                        transform: translate3d(0,-50%,0);
+                        right: 0;
+                        position: absolute;
                     }
                 }
             }

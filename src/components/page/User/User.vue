@@ -12,24 +12,26 @@
 			<div class="base">
 				<h2>
 					<span>账号资料</span>
-					<i @click="$router.push({name: 'UserDetail'})">修改</i>
 				</h2>
 				<ul>
 					<li>
 						<span>手机: </span>
 						<em v-text="$store.state.userInfo.phone"></em>
 					</li>
-					<li>
+					<li @click="$router.push({name: 'Name',params: {name: $store.state.userInfo.name}})">
 						<span>昵称: </span>
 						<em v-text="$store.state.userInfo.name"></em>
+						<i class="yuewang icon-enter"></i>
 					</li>
-					<li>
+					<li @click="$router.push({name: 'Pwd'})">
 						<span>密码: </span>
-						<em v-text="$store.state.userInfo.o_pwd"></em>
+						<em>******</em>
+						<i class="yuewang icon-enter"></i>
 					</li>
-					<li>
+					<li @click="$router.push({name: 'PayPwd'})">
 						<span>支付密码: </span>
-						<em v-text="$store.state.userInfo.o_pay_pwd"></em>
+						<em>******</em>
+						<i class="yuewang icon-enter"></i>
 					</li>
 					<li>
 						<span>注册时间: </span>
