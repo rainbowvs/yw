@@ -83,7 +83,7 @@ export default {
   },
   data () {
     return {
-    	transitionName: 'current', //绑定在组件上面的动效class
+    	transitionName: null, //绑定在组件上面的动效class
     }
 	},
 	watch: {
@@ -91,7 +91,7 @@ export default {
 	    const toDepth = to.path.split('/').length;
 	    const fromDepth = from.path.split('/').length;
     	if(from.name == null)
-    		this.transitionName = 'current';
+    		this.transitionName = null;
     	else
     		this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
     }
