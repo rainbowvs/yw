@@ -139,15 +139,15 @@ const getters = {
 		if(state.fromCart){
 			state.shopCart.forEach((item) => {
 			    if(item.isChecked)
-			        totalPrice += item.price * item.amount
+			        totalPrice += item.price * item.amount;
 			});
 		}else{
 			state.buy.forEach((item) => {
 			    if(item.isChecked)
-			        totalPrice += item.price * item.amount
+			        totalPrice += item.price * item.amount;
 			});
 		}
-        return totalPrice;
+        return totalPrice.toFixed(2);
 	},
 };
 

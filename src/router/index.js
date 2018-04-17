@@ -43,7 +43,7 @@ const router = new Router({
 	  {
 	  	path: '/app/user/name',
 	  	name: 'Name',
-	  	component: () => import('@/components/page/Pwd/Pwd.vue'),
+	  	component: () => import('@/components/page/Name/Name.vue'),
 	  	meta: {
 	    	requireProp: true,//需要对跳转进行验证
 	    },
