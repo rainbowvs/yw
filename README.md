@@ -1,21 +1,36 @@
 # yw
+yw of vue
 
-> yw mobile web app
+基于vue-cli构建越王商城-webApp
 
-## Build Setup
+## 相关
+> 这是商城前端仓库, [后台管理系统前端仓库](https://github.com/rainbowvs/ywwms)
 
-``` bash
-# install dependencies
-npm install
+## 体验
+- [商城前端](http://rainbowvs.com/yuewang/shop/index.html)
+- [后台管理系统前端](http://rainbowvs.com/yuewang/manage/index.html)
 
-# serve with hot reload at localhost:8080
-npm run dev
+## 功能
+> 后端接口基于php+mysql实现
 
-# build for production with minification
-npm run build
+- [x] 登录、注册
+- [x] 购物车
+- [x] 订单管理
+- [x] 收货地址管理
+- [x] 个人信息管理
+- [x] 商品（详情）展示
+- [x] 前端分类搜索
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+## 计划
+> 暂时只做简单优化, 之后抽出空闲时间慢慢补上
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+* 将缺少的功能补全
+* 进一步完善, 网络请求优化
+* 自搭webpack
+
+  
+## 总结
+作为Vue的入门项目, 通过该项目基本掌握Vue的开发流程, 积累一定的Vue开发经验
+
+## 交流
+:hammer: 欢迎提issue互相交流学习
